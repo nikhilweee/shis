@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, user-scalable=no" />
+      <title>{{ album.name }}</title>
+      <link rel="stylesheet" href="public/reset.css" />
+      <link rel="stylesheet" href="public/lightgallery.min.css" />
+      <link rel="stylesheet" href="public/style.css" />
+      <link rel="icon" type="image/x-icon" href="public/favicon.ico" />      
+  </head>
+
+  <body>
+    
+
+    <div id="container">
+
+      <!--
+        Gallery title
+      -->
+      <header>
+        <h1><a href="">{{ album.name }}</a></h1>
+      </header>
+    
+      <!--
+        Breadcrumbs of parent albums
+      -->
+      <nav id="breadcrumbs" class="breadcrumbs">
+        {% for crumb in album.crumbs %}
+          <a class="breadcrumb-item" href="{{ crumb.url }}">{{ crumb.name }}</a>
+          {% if not loop.last %}
+          &nbsp;/&nbsp;
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      <!--
+        Nested albums, if any
+      -->
+      <div id="albums">
+        {% for album in album.albums %}
+        <a href="{{ album.url }}" style="background-image: url('{{ album.image }}')">
+          <div class="info">
+            <h3>{{ album.name }}</h3>
+            <div class="summary">{{ album.size }} items</div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+      
+      <!-- Pagination -->
+      <nav id="pagination" class="breadcrumbs">
+        {% for page in album.pagination %}
+          <a href="{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.number }}</a>
+        {% endfor %}
+      </nav>  
+    
+      <!--
+        All photos and videos
+      -->
+      <ul id="media" class="clearfix">
+        {% for thumb in album.thumbs %}
+        <li data-src="{{ thumb.large }}" data-download-url="{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
+          <a href="{{ thumb.large }}" data-download-url="{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
+            <img src="{{ thumb.small }}" width="{{ thumb.width }}" height="{{ thumb.height }}">
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      
+    </div>
+  
+
+
+    <!-- jQuery -->
+    <script src="public/jquery.min.js"></script>
+    <!-- LightGallery -->
+    <script src="public/lightgallery.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+
+        $("#media").lightGallery({
+          // download: false,
+          // currentPagerPosition: 'middle',
+          speed: 0,
+          toogleThumb: false,
+          // hideBarsDelay: 3600000,
+          backdropDuration: 0,
+          // thumbMargin: 11,
+          slideEndAnimatoin: false,
+          startClass:''
+        });
+
+      });
+    </script>
+
+  </body>
+
+</html>
