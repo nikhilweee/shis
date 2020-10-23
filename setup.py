@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="shis",
-    version="0.0.3",
+    version="0.0.5",
     author="Nikhil Verma",
     author_email="nikhilweee@gmail.com",
     description="Simple HTTP Image Server",
@@ -16,9 +16,9 @@ setuptools.setup(
     package_data={'shis': ['templates/*', 'templates/*/*']},
     license="MIT",
     install_requires=['Pillow', 'Jinja2'],
-    python_requires='>=3.8',
+    python_requires='>=3.6',
     classifiers=[
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.6",
         "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX",
         "Development Status :: 3 - Alpha",

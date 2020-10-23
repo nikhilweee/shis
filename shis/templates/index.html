@@ -5,10 +5,10 @@
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, user-scalable=no" />
       <title>{{ album.name }}</title>
-      <link rel="stylesheet" href="public/reset.css" />
-      <link rel="stylesheet" href="public/lightgallery.min.css" />
-      <link rel="stylesheet" href="public/style.css" />
-      <link rel="icon" type="image/x-icon" href="public/favicon.ico" />      
+      <link rel="stylesheet" href="/static/reset.css" />
+      <link rel="stylesheet" href="/static/lightgallery.min.css" />
+      <link rel="stylesheet" href="/static/style.css" />
+      <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />      
   </head>
 
   <body>
@@ -28,7 +28,7 @@
       -->
       <nav id="breadcrumbs" class="breadcrumbs">
         {% for crumb in album.crumbs %}
-          <a class="breadcrumb-item" href="{{ crumb.url }}">{{ crumb.name }}</a>
+          <a class="breadcrumb-item" href="/{{ crumb.url }}">{{ crumb.name }}</a>
           {% if not loop.last %}
           &nbsp;/&nbsp;
           {% endif %}
@@ -40,7 +40,7 @@
       -->
       <div id="albums">
         {% for album in album.albums %}
-        <a href="{{ album.url }}" style="background-image: url('{{ album.image }}')">
+        <a href="/{{ album.url }}" style="background-image: url('/{{ album.image }}')">
           <div class="info">
             <h3>{{ album.name }}</h3>
             <div class="summary">{{ album.size }} items</div>
@@ -53,7 +53,7 @@
       <!-- Pagination -->
       <nav id="pagination" class="breadcrumbs">
         {% for page in album.pagination %}
-          <a href="{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.number }}</a>
+          <a href="/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
         {% endfor %}
       </nav>  
     
@@ -62,9 +62,9 @@
       -->
       <ul id="media" class="clearfix">
         {% for thumb in album.thumbs %}
-        <li data-src="{{ thumb.large }}" data-download-url="{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
-          <a href="{{ thumb.large }}" data-download-url="{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
-            <img src="{{ thumb.small }}" width="{{ thumb.width }}" height="{{ thumb.height }}">
+        <li data-src="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
+          <a href="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
+            <img src="/{{ thumb.small }}" width="{{ thumb.width }}" height="{{ thumb.height }}">
           </a>
         </li>
         {% endfor %}
@@ -75,9 +75,9 @@
 
 
     <!-- jQuery -->
-    <script src="public/jquery.min.js"></script>
+    <script src="/static/jquery.min.js"></script>
     <!-- LightGallery -->
-    <script src="public/lightgallery.min.js"></script>
+    <script src="/static/lightgallery.min.js"></script>
 
     <script>
       $(document).ready(function() {

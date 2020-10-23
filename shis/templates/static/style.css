@@ -146,6 +146,7 @@
   }
 
   #pagination a {
+    display: inline-block;
     padding: 0.2em;
   }
 
