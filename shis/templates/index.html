@@ -49,13 +49,14 @@
         {% endfor %}
       </div>
 
-      
       <!-- Pagination -->
+      {% if album.thumbs | length %}
       <nav id="pagination" class="breadcrumbs">
         {% for page in album.pagination %}
           <a href="/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
         {% endfor %}
       </nav>  
+      {% endif %}
     
       <!--
         All photos and videos
@@ -69,11 +70,18 @@
         </li>
         {% endfor %}
       </ul>
+
+      <!-- Pagination -->
+      {% if album.thumbs | length %}
+      <nav id="pagination" class="breadcrumbs breadcrumbs-bottom">
+        {% for page in album.pagination %}
+          <a href="/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
+        {% endfor %}
+      </nav>
+      {% endif %}
       
     </div>
   
-
-
     <!-- jQuery -->
     <script src="/static/jquery.min.js"></script>
     <!-- LightGallery -->

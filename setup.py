@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="shis",
-    version="0.0.5",
+    version="0.0.6",
     author="Nikhil Verma",
     author_email="nikhilweee@gmail.com",
     description="Simple HTTP Image Server",

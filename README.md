@@ -32,43 +32,40 @@ $ python -m shis.server
 # Usage
 The following options are available. You can also access this from `python -m shis.server -h`
 ```
-usage: python -m shis.server [-h] [-t THUMB_DIR] [-l] [-s THUMB_DIM] [-j NCPUS] [-n PAGINATION] [-p PORT]
-                             [--thumb-size WIDTH HEIGHT] [--preview-size WIDTH HEIGHT]
+usage: python -m shis.server [-h] [--thumb-dir DIR] [--large] [--clean] [--ncpus CPUS] [--pagination ITEMS] 
+                             [--port PORT] [--samples SAMPLES] [--thumb-size SIZE] [--preview-size SIZE]
                              [image_dir]
 
 A drop in replacement for python -m http.server, albeit for images.
 
 positional arguments:
-  image_dir             directory to look for images (default: current directory)
+  image_dir            directory to look for images (default: current directory)
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -t THUMB_DIR, --thumb-dir THUMB_DIR
-                        directory to store thumbnails and website (default: shis)
-  -l, --large           also create large size previews (takes more time)
-  -s THUMB_DIM, --thumb-dim THUMB_DIM
-                        maximum dimension of thumbnail displayed on the webpage (default: 180)
-  -j NCPUS, --ncpus NCPUS
-                        number of threads to spawn (default: multiprocessing.cpu_count())
-  -n PAGINATION, --pagination PAGINATION
-                        number of items to show per page (default: 200)
-  -p PORT, --port PORT  port to host the server on (default: 8000)
-  --thumb-size WIDTH HEIGHT
-                        size of the generated thumbnails (default: 320x320)
-  --preview-size WIDTH HEIGHT
-                        size of large previews, if generated (default 1024x1024)
+  -h, --help           show this help message and exit
+  --thumb-dir DIR      directory to store thumbnails and website (default: shis)
+  --large              also create large size previews (takes more time)
+  --clean              remove existing thubnail directory (if exists)
+  --ncpus CPUS         number of parallel threads to spawn (default: multiprocessing.cpu_count())
+  --pagination ITEMS   number of items to show per page (default: 200)
+  --port PORT          port to host the server on (default: 8000)
+  --samples SAMPLES    randomly sample images insted of processing all of them (default: all)
+  --thumb-size SIZE    size of the generated thumbnails in pixels (default: 320)
+  --preview-size SIZE  size of large previews in pixels, if generated (default 1024)
 ```
 
 # Benchmarks
 
-| Library Version | Dataset | Dataset Size | Image Dimensions | Number of Images | Thumbnail Dimensions | Thumbnail Size | Conversion Time |                            Machine Specs                           |
-|:---------------:|:-------:|:------------:|:----------------:|:----------------:|:--------------------:|:--------------:|:---------------:|:------------------------------------------------------------------:|
-|      0.0.5      |   FFHQ  |     90GB     |    1024 x 1024   |        70k       |       320 x 320      |      11GB      |      22:50      | AMD EPYC 7401P, 24 Cores, 32GB Memory, Ubuntu 18.04, Python 3.6.10 |
+For comparison, I ran the following tools on the [FFHQ Dataset](https://github.com/NVlabs/ffhq-dataset). The dataset contains 70k images in 1024x1024 resolution for a total size of 90GB. The converted thumbnail size was set to 320x320 for all tools. The tests were done on a machine with an AMD EPYC 7401P CPU with 24 Cores, 32GB Memory and Python 3.6.10 running on Ubuntu 18.04. The config files used are provided below. All conversion times are in `hh:mm:ss` format.
 
+| Library Version | Conversion Time |             Configuration             |
+|:---------------:|:---------------:|:-------------------------------------:|
+|    shis 0.0.5   |      22:50      |                default                |
+|   sigal 2.1.1   |      33:39      | [sigal.conf.py](static/sigal.conf.py) |
+| thumbsup 2.14.0 |       TBA       | [thumbsup.json](static/thumbsup.json) |
 
-
-# Why this project?
-There are a bunch of static image servers (thumbsup, sigal, etc) available in a bunch of different languages (javascript, python, etc). This repo is designed with just one use case in mind, and it plans to do it well. It aims to serve a large directory of images in the fastest way possible.
+# Why another static gallery generator?
+There are a bunch of static image servers (thumbsup, sigal, etc) available in a bunch of different languages (javascript, python, etc). While some of them like fgallery and curator haven't been developed in a while, others like thumbsup and sigal take a lot of time converting images. This repo is designed with just one use case in mind, and it plans to do it well. It aims to serve a large directory of images in the fastest and easiest way possible.
 
 # License
 MIT License

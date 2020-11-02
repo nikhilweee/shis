@@ -1,2 +1,14 @@
+# Compiled
 *.pyc
 __pycache__/
+
+# Sphinx
+docs/build/
+
+# Setuptools
+build/
+dist/
+*.egg-info/
+
+# Mac specific
+.DS_Store

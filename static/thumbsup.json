@@ -1,0 +1,9 @@
+{
+    "thumb-size": 320,
+    "large-size": 0,
+    "input": "images1024x1024",
+    "download-photos": "symlink",
+    "concurrency": 8,
+    "embed-exif": true,
+    "output": "thumbsup"
+}
