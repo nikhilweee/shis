@@ -68,7 +68,7 @@ class tqdm_class(tqdm):
         """Constructor Method."""
         super().__init__(*args, **kwargs)
         self.desc = "Generating Thumbnails "
-        self.ncols = 80
+        self.ncols = 120
 
 
 class CustomHTTPHandler(SimpleHTTPRequestHandler):

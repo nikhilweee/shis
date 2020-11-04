@@ -3,7 +3,7 @@ import math
 import shutil
 import argparse
 from itertools import repeat
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool, Process, cpu_count
 from typing import Tuple, Dict
 
 from tqdm import tqdm
@@ -116,8 +116,13 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
     """
     small_base = os.path.join(args.thumb_dir, 'small')
     image_base = os.path.basename(args.image_dir)
-    for small_root, folders, files in os.walk(small_base):
-        index_root = rreplace(small_root, small_base, image_base)
+
+    for index_root, folders, files in os.walk(image_base):
+        small_root = rreplace(index_root, image_base, small_base)
+
+    # for small_root, folders, files in os.walk(small_base):
+    #     index_root = rreplace(small_root, small_base, image_base)
+
         full_root = rreplace(small_root, 'small', 'full')
         large_root = rreplace(small_root, 'small', 'large')
         if not args.large:
@@ -140,13 +145,14 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
         # Albums
         albums = []
         for folder_name in folders:
-            album_path = os.path.join(small_root, folder_name)
+            album_path = os.path.join(index_root, folder_name)
+            image_root = os.path.join(small_root, folder_name)
             album_size = len(os.listdir(album_path))
             image = ''
             if album_size > 0:
                 for file_name in os.listdir(album_path):
                     if filter_image(file_name):
-                        image_path = os.path.join(album_path, file_name)
+                        image_path = os.path.join(image_root, file_name)
                         image = os.path.relpath(image_path, args.thumb_dir)
                         break
             slug_path = os.path.join(index_root, folder_name)
@@ -167,13 +173,14 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
 
         # Images
         thumb_dim = 180
-        for page, chunk in enumerate(chunks(files, args.pagination)):
+        for page, chunk in enumerate(chunks(sorted(files), args.pagination)):
             thumbs = []
             for name in chunk:
                 small_path = os.path.join(small_root, name)
                 large_path = os.path.join(large_root, name)
                 full_path = os.path.join(full_root, name)
-                im = Image.open(small_path)
+                real_path = os.path.join(index_root, name)
+                im = Image.open(real_path)
                 width, height = im.size
                 if width < height:
                     width = width * thumb_dim / height
@@ -233,7 +240,7 @@ def create_templates(args: argparse.Namespace, num_pages: int) -> None:
         autoescape=select_autoescape(['html', 'xml'])
     )
     for album, page in tqdm(generate_albums(args),
-        desc="Generating Website    ", total=num_pages, ncols=80):
+        desc="Generating Website    ", total=num_pages, ncols=120):
         template = env.get_template('index.html')
         url = album['pagination'][page]['url']
         html = f'{args.thumb_dir}/{url}'
@@ -263,12 +270,15 @@ def main(args: argparse.Namespace) -> None:
     :param args: command line arguments parsed by argparse.
     """
     args = preprocess_args(args)
+
+    server_process = Process(target=start_server, args=(args))
+    server_process.start()
+
     paths, num_pages = process_paths(args)
-    if paths:
-        process_map(generate_thumbnail, paths, repeat(args),
-                    chunksize=1, tqdm_class=tqdm_class)
-        create_templates(args, num_pages)
-    start_server(args)
+    create_templates(args, num_pages)
+
+    process_map(generate_thumbnail, paths, repeat(args), 
+                chunksize=1, tqdm_class=tqdm_class)
 
 
 if __name__ == '__main__':
@@ -283,7 +293,7 @@ if __name__ == '__main__':
         help='also create large size previews (takes more time)')    
     parser.add_argument('--clean', action='store_true',
         help='remove existing thubnail directory (if exists)')
-    parser.add_argument('--ncpus', type=int, default=cpu_count(), metavar='CPUS',
+    parser.add_argument('--ncpus', type=int, default=cpu_count() - 1, metavar='CPUS',
         help='number of parallel threads to spawn (default: multiprocessing.cpu_count())')
     parser.add_argument('--pagination', type=int, default=200, metavar='ITEMS',
         help='number of items to show per page (default: 200)')
