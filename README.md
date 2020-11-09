@@ -13,9 +13,9 @@ $ cd /directory/containing/images
 $ python -m shis.server
 # Processing images from    /directory/containing/images
 # Generating data in   	    /directory/containing/images/shis
+# Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 # Generating Thumbnails : 100%|████████████████| 120/120 [00:00<00:00, 146.27it/s]
 # Generating Website    : 100%|█████████████████████| 2/2 [00:00<00:00, 38.03it/s]
-# Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 
 # There. You can now head over to http://localhost:8000/
 # (Or use your public IP instead)
@@ -24,10 +24,12 @@ $ python -m shis.server
 # Features
 * Drop-in replacement for `python -m http.server`, so it's easy on your brain.
 * Recursively process image directory trees, so you can see them all.
-* Parallelly create both small and large size thumbnails, so you don't have to wait.
-* Minimal dependencies - just Pillow and Jinja2.
+* Creates both small and large size thumbnails, so it's easy on your eyes.
+* Minimal dependencies - just Pillow, Jinja2 and tqdm.
 * Server side pagination, so it's easy on your browser.
 * Tries to preserve EXIF orientation, so you don't have to rotate manually.
+* Serves website before creating thumbnails, so you don't have to wait.
+* Uses multiple processes to create thumbails, so it's fast.
 
 # Usage
 The following options are available. You can also access this from `python -m shis.server -h`
@@ -62,7 +64,7 @@ For comparison, I ran the following tools on the [FFHQ Dataset](https://github.c
 |:---------------:|:---------------:|:-------------------------------------:|
 |    shis 0.0.5   |      22:50      |                default                |
 |   sigal 2.1.1   |      33:39      | [sigal.conf.py](static/sigal.conf.py) |
-| thumbsup 2.14.0 |       TBA       | [thumbsup.json](static/thumbsup.json) |
+| thumbsup 2.14.0 |       >1h       | [thumbsup.json](static/thumbsup.json) |
 
 # Why another static gallery generator?
 There are a bunch of static image servers (thumbsup, sigal, etc) available in a bunch of different languages (javascript, python, etc). While some of them like fgallery and curator haven't been developed in a while, others like thumbsup and sigal take a lot of time converting images. This repo is designed with just one use case in mind, and it plans to do it well. It aims to serve a large directory of images in the fastest and easiest way possible.

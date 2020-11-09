@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     package_data={'shis': ['templates/*', 'templates/*/*']},
     license="MIT",
-    install_requires=['Pillow', 'Jinja2'],
+    install_requires=['Pillow', 'Jinja2', 'tqdm'],
     python_requires='>=3.6',
     classifiers=[
         "Programming Language :: Python :: 3.6",
