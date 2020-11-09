@@ -7,6 +7,11 @@ from typing import List
 from tqdm import tqdm
 
 
+#-------------------------------------------------------------------------------
+# General Utils
+#-------------------------------------------------------------------------------
+
+
 def chunks(iterable: List[str], chunk_size: int):
     """Yield successive ``chunk_size`` sized chunks from ``iterable``.
 
@@ -57,18 +62,9 @@ def filter_image(name):
     return False
 
 
-class tqdm_class(tqdm):
-    """Custom class for :class:`tqdm.contrib.concurrent.process_map`.
-
-    This is a custom class to support a user defined progress bar text
-    (currently ``Generating Thumbnails``) and column size (currently ``80``).
-    """
-
-    def __init__(self, *args, **kwargs):
-        """Constructor Method."""
-        super().__init__(*args, **kwargs)
-        self.desc = "Generating Thumbnails "
-        self.ncols = 120
+#-------------------------------------------------------------------------------
+# Server Utils
+#-------------------------------------------------------------------------------
 
 
 class CustomHTTPHandler(SimpleHTTPRequestHandler):
@@ -87,9 +83,13 @@ class CustomHTTPHandler(SimpleHTTPRequestHandler):
         :return: the translated path
         """
         path = SimpleHTTPRequestHandler.translate_path(self, path)
-        relpath = os.path.relpath(path, os.getcwd())
-        fullpath = os.path.join(self.server.directory, relpath)
-        return fullpath
+        if hasattr(self.server, 'directory'):
+            relpath = os.path.relpath(path, os.getcwd())
+            path = os.path.join(self.server.directory, relpath)
+        return path
+    
+    def log_message(self, format, *args):
+        pass
 
 
 class CustomHTTPServer(HTTPServer):
@@ -119,5 +119,5 @@ def start_server(args: argparse.Namespace) -> None:
         server_class = partial(CustomHTTPServer, directory=args.thumb_dir)
         test(handler_class, server_class, port=args.port)
     if sys.version_info.minor >= 7:
-        handler_class = partial(SimpleHTTPRequestHandler, directory=args.thumb_dir)
+        handler_class = partial(CustomHTTPHandler, directory=args.thumb_dir)
         test(handler_class, port=args.port)

@@ -2,17 +2,19 @@ import os
 import math
 import shutil
 import argparse
+import random
+import sys
 from itertools import repeat
 from multiprocessing import Pool, Process, cpu_count
 from typing import Tuple, Dict
 
 from tqdm import tqdm
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, UnidentifiedImageError
 from tqdm.contrib.concurrent import process_map
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from shis.utils import (chunks, rreplace, slugify, urlify,
-                        tqdm_class, start_server, filter_image)
+                        start_server, filter_image)
 
 
 def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespace):
@@ -69,12 +71,12 @@ def process_paths(args: argparse.Namespace) -> Tuple[Tuple[str, str, str, str], 
     paths = []
     num_pages = 0
 
-    print(f'Processing images from:\t {args.image_dir}')
+    tqdm.write(f'Processing images from:\t {args.image_dir}')
     if args.clean and os.path.isdir(args.thumb_dir):
         existing_dir = os.path.relpath(args.thumb_dir, os.getcwd())
-        print(f'Clearing existing data:\t {args.thumb_dir}')
+        tqdm.write(f'Clearing existing data:\t {args.thumb_dir}')
         shutil.rmtree(args.thumb_dir)
-    print(f'Generating data in:\t {args.thumb_dir}')
+    tqdm.write(f'Generating data in:\t {args.thumb_dir}')
 
     for image_root, _, files in os.walk(args.image_dir):
         if args.thumb_dir in image_root:
@@ -180,7 +182,10 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
                 large_path = os.path.join(large_root, name)
                 full_path = os.path.join(full_root, name)
                 real_path = os.path.join(index_root, name)
-                im = Image.open(real_path)
+                try:
+                    im = Image.open(real_path)
+                except UnidentifiedImageError:
+                    continue
                 width, height = im.size
                 if width < height:
                     width = width * thumb_dim / height
@@ -239,6 +244,7 @@ def create_templates(args: argparse.Namespace, num_pages: int) -> None:
         loader=FileSystemLoader(template_dir),
         autoescape=select_autoescape(['html', 'xml'])
     )
+
     for album, page in tqdm(generate_albums(args),
         desc="Generating Website    ", total=num_pages, ncols=120):
         template = env.get_template('index.html')
@@ -270,15 +276,16 @@ def main(args: argparse.Namespace) -> None:
     :param args: command line arguments parsed by argparse.
     """
     args = preprocess_args(args)
-
-    server_process = Process(target=start_server, args=(args))
+    # Start the server process
+    server_process = Process(target=start_server, args=[args])
     server_process.start()
-
+    # Generate HTML pages
     paths, num_pages = process_paths(args)
     create_templates(args, num_pages)
-
-    process_map(generate_thumbnail, paths, repeat(args), 
-                chunksize=1, tqdm_class=tqdm_class)
+    # Generate thumbnails
+    if paths:
+        process_map(generate_thumbnail, paths, repeat(args), chunksize=1, 
+            max_workers=args.ncpus, desc='Generating Thumbnails ', ncols=120)
 
 
 if __name__ == '__main__':
