@@ -2,15 +2,15 @@
 A drop-in replacement for `python -m http.server`, albeit for images.
 
 # Quickstart
-* Install. (You know this already.)
+Install. (You know this already.)
 ```
 $ pip install shis
 ```
-* Navigate to a directory containing images.
+Navigate to a directory containing images.
 ```
 $ cd /directory/containing/images
 ```
-* Remember python -m http.server? Good.
+Remember python -m http.server? Good.
 ```
 $ python -m shis.server
 # Serving HTTP on 0.0.0.0 port 7447. Press CTRL-\ (SIGQUIT) to quit.
@@ -19,7 +19,9 @@ $ python -m shis.server
 # Generating Website     : 100%|████████████████████| 2/2 [00:00<00:00, 35.09it/s]
 # Generating Thumbnails  : 100%|███████████████| 120/120 [00:00<00:00, 132.48it/s]
 ```
-There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP instead)
+There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP instead).
+
+# Preview
 Here's a glimpse of what you can expect to see.
 
 ![Demo](https://github.com/nikhilweee/shis/blob/main/static/demo.png)
