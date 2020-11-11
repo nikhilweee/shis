@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../shis/'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -22,7 +22,7 @@ copyright = '2020, Nikhil Verma'
 author = 'Nikhil Verma'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.0.7'
 
 
 # -- General configuration ---------------------------------------------------

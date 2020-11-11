@@ -148,6 +148,7 @@
   }
 
   nav.breadcrumbs-bottom {
+    border-bottom: none;
     border-top: 1px solid #ddd;
     margin: 1em 0 0 0;
     padding: 0.8em 0em 0.8em 0.1em;

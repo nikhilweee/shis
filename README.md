@@ -2,58 +2,56 @@
 A drop-in replacement for `python -m http.server`, albeit for images.
 
 # Quickstart
-```shell
-# Install (using test pypi for now)
-$ pip install -i https://test.pypi.org/simple/ shis
-
-# Navigate to a directory containing images.
-$ cd /directory/containing/images
-
-# Remember python -m http.server? Good.
-$ python -m shis.server
-# Processing images from    /directory/containing/images
-# Generating data in   	    /directory/containing/images/shis
-# Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
-# Generating Thumbnails : 100%|████████████████| 120/120 [00:00<00:00, 146.27it/s]
-# Generating Website    : 100%|█████████████████████| 2/2 [00:00<00:00, 38.03it/s]
-
-# There. You can now head over to http://localhost:8000/
-# (Or use your public IP instead)
+* Install. (You know this already.)
 ```
+$ pip install shis
+```
+* Navigate to a directory containing images.
+```
+$ cd /directory/containing/images
+```
+* Remember python -m http.server? Good.
+```
+$ python -m shis.server
+# Serving HTTP on 0.0.0.0 port 7447. Press CTRL-\ (SIGQUIT) to quit.
+# Processing images from : directory/containing/images
+# Creating thumbnails in : directory/containing/images/shis
+# Generating Website     : 100%|████████████████████| 2/2 [00:00<00:00, 35.09it/s]
+# Generating Thumbnails  : 100%|███████████████| 120/120 [00:00<00:00, 132.48it/s]
+```
+There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP instead)
+Here's a glimpse of what you can expect to see.
+
+![Demo](https://github.com/nikhilweee/shis/blob/main/static/demo.png)
 
 # Features
 * Drop-in replacement for `python -m http.server`, so it's easy on your brain.
-* Recursively process image directory trees, so you can see them all.
+* Serves website even before creating thumbnails, so you don't have to wait.
+* Uses multiple processes to create thumbails, so it's fast.
+* Efficient resumes, so that further invocations are faster.
 * Creates both small and large size thumbnails, so it's easy on your eyes.
 * Minimal dependencies - just Pillow, Jinja2 and tqdm.
 * Server side pagination, so it's easy on your browser.
 * Tries to preserve EXIF orientation, so you don't have to rotate manually.
-* Serves website before creating thumbnails, so you don't have to wait.
-* Uses multiple processes to create thumbails, so it's fast.
 
 # Usage
-The following options are available. You can also access this from `python -m shis.server -h`
+The following options are available. You can also access this via `python -m shis.server -h`
 ```
-usage: python -m shis.server [-h] [--thumb-dir DIR] [--large] [--clean] [--ncpus CPUS] [--pagination ITEMS] 
-                             [--port PORT] [--samples SAMPLES] [--thumb-size SIZE] [--preview-size SIZE]
-                             [image_dir]
+    python -m shis.server [-h] [--image-dir DIR] [--thumb-dir DIR] 
+        [--previews] [--clean] [--ncpus CPUS] [--pagination ITEMS] 
+        [--port PORT] [--thumb-size SIZE] [--preview-size SIZE]
 
-A drop in replacement for python -m http.server, albeit for images.
-
-positional arguments:
-  image_dir            directory to look for images (default: current directory)
-
-optional arguments:
-  -h, --help           show this help message and exit
-  --thumb-dir DIR      directory to store thumbnails and website (default: shis)
-  --large              also create large size previews (takes more time)
-  --clean              remove existing thubnail directory (if exists)
-  --ncpus CPUS         number of parallel threads to spawn (default: multiprocessing.cpu_count())
-  --pagination ITEMS   number of items to show per page (default: 200)
-  --port PORT          port to host the server on (default: 8000)
-  --samples SAMPLES    randomly sample images insted of processing all of them (default: all)
-  --thumb-size SIZE    size of the generated thumbnails in pixels (default: 320)
-  --preview-size SIZE  size of large previews in pixels, if generated (default 1024)
+    optional arguments:
+    -h, --help           show this help message and exit
+    --image-dir DIR      directory to scan for images (default: current directory)
+    --thumb-dir DIR      directory to store thumbnails and website (default: shis)
+    --previews           create separate thumbnails for full screen previews (takes more time)
+    --clean              remove existing thubnail directory (if exists)
+    --ncpus CPUS         number of workers to spawn (default: multiprocessing.cpu_count())
+    --pagination ITEMS   number of items to show per page (default: 200)
+    --port PORT          port to host the server on (default: 7447)
+    --thumb-size SIZE    size of the generated thumbnails in pixels (default: 256)
+    --preview-size SIZE  size of full screen previews in pixels, if generated (default 1024)
 ```
 
 # Benchmarks
