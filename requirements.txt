@@ -1,0 +1,4 @@
+Pillow
+Jinja2
+tqdm
+sphinx-argparse
