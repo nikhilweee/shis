@@ -22,7 +22,7 @@ copyright = '2020, Nikhil Verma'
 author = 'Nikhil Verma'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.7'
+release = '0.0.8'
 
 
 # -- General configuration ---------------------------------------------------
@@ -32,7 +32,8 @@ release = '0.0.7'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.autodoc.typehints'
+    'sphinx.ext.autodoc.typehints',
+    'sphinxarg.ext'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

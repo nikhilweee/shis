@@ -3,19 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Simple HTTP Image Server
-========================
+SHIS
+====
 
-SHIS is a drop in replacement for ``python -m http.server``, albeit for 
-images. It lets you quickly and conveniently browse through image directories
-directly in your browser.
+**S**\imple **H**\TTP **I**\mage **S**\erver (or SHIS for short) is a drop in
+replacement for ``python -m http.server``, albeit for images. It lets you
+quickly and conveniently browse through image directories directly in your
+browser.
 
 .. toctree::
    :hidden:
    :maxdepth: 1
 
-   usage
+   self
    features
+   usage
    api
 
 

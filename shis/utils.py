@@ -8,10 +8,10 @@ from typing import Generator, List
 
 from tqdm import tqdm
 
+
 #-------------------------------------------------------------------------------
 # General Utils
 #-------------------------------------------------------------------------------
-
 
 def chunks(iterable: List[str], chunk_size: int) -> Generator[List[str], None, None] :
     """Yield successive :attr:`chunk_size` sized chunks from :attr:`iterable`.
@@ -80,9 +80,27 @@ def filter_image(name: str) -> bool:
 
 
 #-------------------------------------------------------------------------------
-# Server Utils
+# Argparse Utils
 #-------------------------------------------------------------------------------
 
+def fixed_width_formatter(width: int=80) -> argparse.HelpFormatter:
+    """Patch :class:`argparse.HelpFormatter` to use a fixed width.
+
+    :param width: the maximum width of the help and usage text generated.
+    :return: a patched instance of the formatter class.
+    """
+
+    class HelpFormatter(argparse.HelpFormatter):
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(width=width, *args, **kwargs)
+
+    return HelpFormatter
+
+
+#-------------------------------------------------------------------------------
+# Server Utils
+#-------------------------------------------------------------------------------
 
 class CustomHTTPHandler(SimpleHTTPRequestHandler):
     """An HTTP Handler to serve arbitrary directories compatible with Python 3.6.

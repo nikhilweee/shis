@@ -11,7 +11,8 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 from tqdm import tqdm
 from tqdm.contrib.concurrent import process_map
 
-from shis.utils import chunks, filter_image, rreplace, slugify, start_server, urlify
+from shis.utils import (chunks, filter_image, rreplace, slugify,
+                        start_server, urlify, fixed_width_formatter)
 
 
 def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespace):
@@ -265,10 +266,10 @@ def preprocess_args(args: argparse.Namespace) -> argparse.Namespace:
     :param args: command line arguments parsed by argparse.
     :return: preprocessed command line arguments.
     """
-    args.image_dir = os.path.join(
-        os.getcwd(), args.image_dir).rstrip(os.path.sep)
-    args.thumb_dir = os.path.join(
-        os.getcwd(), args.thumb_dir).rstrip(os.path.sep)
+    args.image_dir = os.path.abspath(os.path.join(
+        os.getcwd(), args.image_dir)).rstrip(os.path.sep)
+    args.thumb_dir = os.path.abspath(os.path.join(
+        os.getcwd(), args.thumb_dir)).rstrip(os.path.sep)
     return args
 
 
@@ -288,28 +289,38 @@ def main(args: argparse.Namespace) -> None:
         process_map(generate_thumbnail, paths, repeat(args), chunksize=1, 
             max_workers=args.ncpus, desc='Generating Thumbnails  ', ncols=100)
 
+def make_parser() -> argparse.ArgumentParser:
+    """Creates a parser with the specified options.
 
-if __name__ == '__main__':
+    :return: a parser with the specified options.
+    """
+
     parser = argparse.ArgumentParser(
         prog='python -m shis.server', 
-        description='A drop in replacement for python -m http.server, albeit for images.')
-    parser.add_argument('--image-dir', default='', metavar='DIR',
+        description='A drop in replacement for python -m http.server, albeit for images.',
+        formatter_class=fixed_width_formatter(width=80))
+    parser.add_argument('--image-dir', '-d', default='', metavar='DIR',
         help='directory to scan for images (default: current directory)')
-    parser.add_argument('--thumb-dir', default='shis', metavar='DIR',
+    parser.add_argument('--thumb-dir', '-s', default='shis', metavar='DIR',
         help='directory to store thumbnails and website (default: shis)')
-    parser.add_argument('--previews', action='store_true',
+    parser.add_argument('--previews', '-f', action='store_true',
         help='create separate thumbnails for full screen previews (takes more time)')
-    parser.add_argument('--clean', action='store_true',
+    parser.add_argument('--clean', '-c', action='store_true',
         help='remove existing thubnail directory (if exists)')
-    parser.add_argument('--ncpus', type=int, default=cpu_count() - 1, metavar='CPUS',
+    parser.add_argument('--ncpus', '-j', type=int, default=cpu_count() - 1, metavar='CPUS',
         help='number of workers to spawn (default: multiprocessing.cpu_count())')
-    parser.add_argument('--pagination', type=int, default=200, metavar='ITEMS',
+    parser.add_argument('--pagination', '-n', type=int, default=200, metavar='ITEMS',
         help='number of items to show per page (default: 200)')
-    parser.add_argument('--port', type=int, default=7447,
+    parser.add_argument('--port', '-p', type=int, default=7447,
         help='port to host the server on (default: 7447)')
     parser.add_argument('--thumb-size', type=int, default=256, metavar='SIZE',
         help='size of the generated thumbnails in pixels (default: 256)')
     parser.add_argument('--preview-size', type=int, default=1024, metavar='SIZE',
         help='size of full screen previews in pixels, if generated (default 1024)')
+    return parser
+
+
+if __name__ == '__main__':
+    parser = make_parser()
     args = parser.parse_args()
     main(args)

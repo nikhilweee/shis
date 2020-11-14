@@ -1,120 +1,100 @@
 Usage
 =====
 
-SHIS provides a number of options that can help you according to your liking.
+.. argparse::
+    :module: shis.server
+    :func: make_parser
+    :prog: shis.server
+    :nodescription:
+    :nodefault:
 
-.. code-block:: text
+    SHIS provides a number of options that can help you with customizatiion.
 
-    python -m shis.server [-h] [--image-dir DIR] [--thumb-dir DIR] 
-        [--previews] [--clean] [--ncpus CPUS] [--pagination ITEMS] 
-        [--port PORT] [--thumb-size SIZE] [--preview-size SIZE]
+    --image-dir -d : @after
+        SHIS will recursively scan this directory and all its subdirectories
+        for image files.
 
-    optional arguments:
-    -h, --help           show this help message and exit
-    --image-dir DIR      directory to scan for images (default: current directory)
-    --thumb-dir DIR      directory to store thumbnails and website (default: shis)
-    --previews           create separate thumbnails for full screen previews (takes more time)
-    --clean              remove existing thubnail directory (if exists)
-    --ncpus CPUS         number of workers to spawn (default: multiprocessing.cpu_count())
-    --pagination ITEMS   number of items to show per page (default: 200)
-    --port PORT          port to host the server on (default: 7447)
-    --thumb-size SIZE    size of the generated thumbnails in pixels (default: 256)
-    --preview-size SIZE  size of full screen previews in pixels, if generated (default 1024)
+        .. note::
+            | SHIS categorizes a file as an image if the file ends in one
+              of the following extensions:
+            | ``jpeg``, ``jpg``, ``png``, or ``tiff``.
 
 
-``--image-dir``
----------------
-SHIS will recursively scan this directory and all its subdirectories to search
-and process image files. If this option is not supplied, SHIS will scan the
-current directory.
+    --thumb-dir -s : @after
+        SHIS will store all processed files in this directory, the structure of
+        which is as follows:
 
-.. note:: 
-    | SHIS categorizes a file as an image if the file ends in one
-      of the following extensions: 
-    | ``jpeg``, ``jpg``, ``png``, or ``tiff``.
+        .. code-block:: bash
 
-
-``--thumb-dir``
----------------
-SHIS will store all processed files in this directory. If this option is not 
-specified, SHIS creates a directory named ``shis`` in the current directory.
-The structure of this directory will be as follows. 
-
-.. code-block:: bash
-
-    shis
-    ├── small
-    │   ├── image.jpg
-    │   ..
-    ├── large
-    │   ..
-    ├── full
-    │   ├── image.jpg -> ../../image.jpg
-    │   ..
-    ├── static
-    │   ├── dir-subdir.html
-    │   ..
-    ├── html
-    │   ├── dir-subdir.html
-    │   ..
-    └── index.html
+            shis
+            ├── small
+            │   ├── image.jpg
+            │   ..
+            ├── large
+            │   ..
+            ├── full
+            │   ├── image.jpg -> ../../image.jpg
+            │   ..
+            ├── static
+            │   ├── dir-subdir.html
+            │   ..
+            ├── html
+            │   ├── dir-subdir.html
+            │   ..
+            └── index.html
 
 
-Once processing is complete, ``small`` shall store small size thumbnails 
-(default: 320px) of every image. If ``--previews`` is set, ``large`` shall 
-store large size previews (default: 1024px) of every image. If not, then 
-it shall store symlinks to the original image in ``image_dir``. ``full`` 
-shall always store symlinks to the original image in ``image_dir``.
+        Once processing is complete, ``small`` shall store small size thumbnails
+        (default: 320px) of every image. If ``--previews`` is set, ``large``
+        shall store large size previews (default: 1024px) of every image. If
+        not, then it shall store symlinks to the original image in
+        ``image_dir``. ``full`` shall always store symlinks to the original
+        image in ``image_dir``.
 
-The ``static`` folder stores Javascript and CSS files required for the 
-website. ``index.html`` is the first HTML page of the website. All other
-HTML pages are stored in ``html``.
+        The ``static`` folder stores Javascript and CSS files required for the
+        website. ``index.html`` is the first HTML page of the website. All other
+        HTML pages are stored in ``html``.
 
-``--previews``
---------------
-When a user clicks on a thumbnail in the generated website, a full screen
-preview opens up. By default, this is the original full size image being 
-served. If this option is set, SHIS will explicitly create thumbnails for
-full screen previews (which will typically be much smaller in size compared 
-to the original full size image) and serve them instead of the original 
-full size image.
 
-``--clean``
------------
-If ``thumb_dir`` already exists, SHIS does not attempt to remove any existing
-thumbnails from the ``small``, ``large``, or ``full`` directories. However, 
-if this option is set, SHIS will clear all contents from ``thumb_dir`` before 
-proceeding.
+    --previews -f : @after
+        When a user clicks on a thumbnail in the generated website, a full
+        screen preview opens up. By default, this is the original full size
+        image being served. If this option is set, SHIS will explicitly create
+        thumbnails for full screen previews (which will typically be much
+        smaller in size compared to the original full size image) and serve
+        them instead of the original full size image.
 
-``--ncpus``
------------
-This is the number of processes that will be spawned simultaneously. One of
-these processes will be used to run an HTTP Server and the others will be
-used parallely for the purpose of processing images. By default, SHIS is
-configured to use all available CPU cores for maximum performance. You can 
-configure this behaviour by using this option.
+    --clean -c : @after
+        If ``thumb_dir`` already exists, SHIS does not attempt to remove any
+        existing thumbnails from the ``small``, ``large``, or ``full``
+        directories. In fact, SHIS uses this information to only create
+        thumbnails if they haven't already been created. However, if this
+        option is set, SHIS will clear all contents from ``thumb_dir``
+        and start afresh.
 
-``--pagination``
-----------------
-This is the maximum number of thumbnails displayed in a single page on the
-website. By default, SHIS displays 200 images per page. The rest of the images
-are distributed across multiple pages.
+    --ncpus -j : @after
+        This is the number of processes that will be spawned simultaneously.
+        One of these processes will be used to run an HTTP Server and the
+        others will be used parallely for the purpose of processing images.
+        By default, SHIS is configured to use all available CPU cores for
+        maximum performance.
 
-``--port``
-----------
-This is the port on which the generated website shall be served. By default,
-this is set to 7447 (the T9 keys for ``shis``). If you ever encounter 
-``OSError: [Errno 98] Address already in use`` while running SHIS, 
-this is the option that you should change.
+    --pagination -n : @after
+        This is the maximum number of thumbnails displayed in a single page on
+        the website. The rest of the images are distributed across multiple
+        pages.
 
-``--thumb-size``
-----------------
-This is the size of the thumbnails generated by SHIS. Note that this option
-also controls the size of the thumbnails displayed on the website. By default,
-SHIS generates thumbnails of size 256px.
+    --port -p : @after
+        This is the port on which the generated website shall be served. By
+        default, this is set to 7447 (the T9 keys for ``shis``). If you ever
+        encounter ``OSError: [Errno 98] Address already in use`` while running
+        SHIS, this is the option that you should change.
 
-``--preview-size``
-------------------
-This is the size of the full screen preview generated by SHIS. By default, 
-this is set to 1024px. Note that the website always displays fullscreen
-previews.
+    --thumb-size : @after
+        This is the size of the thumbnails generated by SHIS. Note that this
+        option also controls the size of the thumbnails displayed on the
+        website.
+
+    --preview-size : @after
+        This is the size of the full screen preview generated by SHIS. Note
+        that the website always displays fullscreen previews.

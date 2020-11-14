@@ -24,7 +24,7 @@ There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP inst
 # Preview
 Here's a glimpse of what you can expect to see.
 
-![Demo](https://github.com/nikhilweee/shis/blob/main/static/demo.png)
+![Demo](https://raw.githubusercontent.com/nikhilweee/shis/main/static/demo.png)
 
 # Features
 * Drop-in replacement for `python -m http.server`, so it's easy on your brain.
@@ -39,21 +39,31 @@ Here's a glimpse of what you can expect to see.
 # Usage
 The following options are available. You can also access this via `python -m shis.server -h`
 ```
-    python -m shis.server [-h] [--image-dir DIR] [--thumb-dir DIR] 
-        [--previews] [--clean] [--ncpus CPUS] [--pagination ITEMS] 
-        [--port PORT] [--thumb-size SIZE] [--preview-size SIZE]
+usage: python -m shis.server [-h] [--image-dir DIR] [--thumb-dir DIR] 
+                             [--previews] [--clean] [--ncpus CPUS]
+                             [--pagination ITEMS] [--port PORT] 
+                             [--thumb-size SIZE] [--preview-size SIZE]
 
-    optional arguments:
-    -h, --help           show this help message and exit
-    --image-dir DIR      directory to scan for images (default: current directory)
-    --thumb-dir DIR      directory to store thumbnails and website (default: shis)
-    --previews           create separate thumbnails for full screen previews (takes more time)
-    --clean              remove existing thubnail directory (if exists)
-    --ncpus CPUS         number of workers to spawn (default: multiprocessing.cpu_count())
-    --pagination ITEMS   number of items to show per page (default: 200)
-    --port PORT          port to host the server on (default: 7447)
-    --thumb-size SIZE    size of the generated thumbnails in pixels (default: 256)
-    --preview-size SIZE  size of full screen previews in pixels, if generated (default 1024)
+A drop in replacement for python -m http.server, albeit for images.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --image-dir DIR, -d DIR
+                        directory to scan for images (default: current directory)
+  --thumb-dir DIR, -s DIR
+                        directory to store thumbnails and website (default: shis)
+  --previews, -f        create separate thumbnails for full screen previews 
+                        (takes more time)
+  --clean, -c           remove existing thubnail directory (if exists)
+  --ncpus CPUS, -j CPUS
+                        number of workers to spawn 
+                        (default: multiprocessing.cpu_count())
+  --pagination ITEMS, -n ITEMS
+                        number of items to show per page (default: 200)
+  --port PORT, -p PORT  port to host the server on (default: 7447)
+  --thumb-size SIZE     size of the generated thumbnails in pixels (default: 256)
+  --preview-size SIZE   size of full screen previews in pixels, if generated 
+                        (default 1024)
 ```
 
 # Benchmarks
