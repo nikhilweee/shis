@@ -1,6 +1,6 @@
 # Simple HTTP Image Server
 [![GitHub](https://img.shields.io/github/license/nikhilweee/shis)](https://github.com/nikhilweee/shis/blob/main/LICENSE.md)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/shis)]((https://pypi.org/project/shis/))
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/shis)](https://pypi.org/project/shis/)
 [![PyPI](https://img.shields.io/pypi/v/shis)](https://pypi.org/project/shis/)
 [![Documentation Status](https://readthedocs.org/projects/shis/badge/?version=stable)](https://shis.readthedocs.io)
 
