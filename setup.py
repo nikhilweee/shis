@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="shis",
-    version="0.0.8",
+    version="0.0.9",
     author="Nikhil Verma",
     author_email="nikhilweee@gmail.com",
     description="Simple HTTP Image Server",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/nikhilweee/shis",
+    url="https://github.com/nikhilweee/shis/",
     packages=setuptools.find_packages(),
     package_data={'shis': ['templates/*', 'templates/*/*']},
     license="MIT",
