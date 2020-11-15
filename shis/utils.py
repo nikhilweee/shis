@@ -13,6 +13,7 @@ from tqdm import tqdm
 # General Utils
 #-------------------------------------------------------------------------------
 
+
 def chunks(iterable: List[str], chunk_size: int) -> Generator[List[str], None, None] :
     """Yield successive :attr:`chunk_size` sized chunks from :attr:`iterable`.
 
@@ -83,6 +84,7 @@ def filter_image(name: str) -> bool:
 # Argparse Utils
 #-------------------------------------------------------------------------------
 
+
 def fixed_width_formatter(width: int=80) -> argparse.HelpFormatter:
     """Patch :class:`argparse.HelpFormatter` to use a fixed width.
 
@@ -101,6 +103,7 @@ def fixed_width_formatter(width: int=80) -> argparse.HelpFormatter:
 #-------------------------------------------------------------------------------
 # Server Utils
 #-------------------------------------------------------------------------------
+
 
 class CustomHTTPHandler(SimpleHTTPRequestHandler):
     """An HTTP Handler to serve arbitrary directories compatible with Python 3.6.
@@ -135,6 +138,7 @@ def start_server(args: argparse.Namespace) -> None:
     if sys.version_info.minor >= 7:
         start_server_37(args)
 
+
 def start_server_36(args):
     """Start an HTTP Server on Python 3.6.
     
@@ -158,6 +162,7 @@ def start_server_36(args):
         serve_message += "Press CTRL-\ (SIGQUIT) to quit."
         tqdm.write(serve_message.format(host=sa[0], port=sa[1]))
         Process(target=httpd.serve_forever).start()
+
 
 def start_server_37(args):
     """Start an HTTP Server on Python 3.7 and above.

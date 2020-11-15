@@ -289,6 +289,7 @@ def main(args: argparse.Namespace) -> None:
         process_map(generate_thumbnail, paths, repeat(args), chunksize=1, 
             max_workers=args.ncpus, desc='Generating Thumbnails  ', ncols=100)
 
+
 def make_parser() -> argparse.ArgumentParser:
     """Creates a parser with the specified options.
 
