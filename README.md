@@ -1,16 +1,21 @@
 # Simple HTTP Image Server
+[![GitHub](https://img.shields.io/github/license/nikhilweee/shis)](https://github.com/nikhilweee/shis/blob/main/LICENSE.md)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/shis)]((https://pypi.org/project/shis/))
+[![PyPI](https://img.shields.io/pypi/v/shis)](https://pypi.org/project/shis/)
+[![Documentation Status](https://readthedocs.org/projects/shis/badge/?version=stable)](https://shis.readthedocs.io)
+
 A drop-in replacement for `python -m http.server`, albeit for images.
 
 # Quickstart
-Install. (You know this already.)
+Install `shis`.
 ```
 $ pip install shis
 ```
-Navigate to a directory containing images.
+Navigate to a `directory/containing/images`.
 ```
 $ cd /directory/containing/images
 ```
-Remember python -m http.server? Good.
+Remember `python -m http.server`? Good.
 ```
 $ python -m shis.server
 # Serving HTTP on 0.0.0.0 port 7447. Press CTRL-\ (SIGQUIT) to quit.
@@ -22,7 +27,7 @@ $ python -m shis.server
 There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP instead).
 
 # Preview
-Here's a glimpse of what you can expect to see.
+Here's an example of what you can expect to see.
 
 ![Demo](https://raw.githubusercontent.com/nikhilweee/shis/main/static/demo.png)
 
@@ -65,6 +70,7 @@ optional arguments:
   --preview-size SIZE   size of full screen previews in pixels, if generated 
                         (default 1024)
 ```
+Further documentation can be found at [shis.readthedocs.io](https://shis.readthedocs.io).
 
 # Benchmarks
 
