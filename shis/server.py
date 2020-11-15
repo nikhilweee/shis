@@ -299,7 +299,7 @@ def make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog='python -m shis.server', 
         description='A drop in replacement for python -m http.server, albeit for images.',
-        formatter_class=fixed_width_formatter(width=80))
+        formatter_class=fixed_width_formatter(width=120))
     parser.add_argument('--image-dir', '-d', default='', metavar='DIR',
         help='directory to scan for images (default: current directory)')
     parser.add_argument('--thumb-dir', '-s', default='shis', metavar='DIR',
