@@ -3,7 +3,7 @@ import os
 import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler
-from multiprocessing import Process
+from threading import Thread
 from typing import Generator, List
 
 from tqdm import tqdm
@@ -128,15 +128,15 @@ class CustomHTTPHandler(SimpleHTTPRequestHandler):
 
 
 def start_server(args: argparse.Namespace) -> None:
-    """Start a Simple HTTP Server as a separate process.
+    """Start a Simple HTTP Server as a separate thread.
     
     :param args: preprocessed command line arguments.
     """
     assert sys.version_info.major == 3, "Only Python 3 is supported."
     if sys.version_info.minor == 6:
-        start_server_36(args)
+        return start_server_36(args)
     if sys.version_info.minor >= 7:
-        start_server_37(args)
+        return start_server_37(args)
 
 
 def start_server_36(args):
@@ -144,6 +144,7 @@ def start_server_36(args):
     
     :meta private:
     """
+    import socketserver
     from http.server import HTTPServer
 
     class CustomHTTPServer(HTTPServer):
@@ -152,16 +153,27 @@ def start_server_36(args):
                     directory: str=os.getcwd()):
             self.directory = directory
             HTTPServer.__init__(self, server_address, RequestHandlerClass)
+
+    class ThreadingHTTPServer(socketserver.ThreadingMixIn, CustomHTTPServer):
+        daemon_threads = False
     
     handler_class = CustomHTTPHandler
-    server_class = partial(CustomHTTPServer, directory=args.thumb_dir)
+    server_class = partial(ThreadingHTTPServer, directory=args.thumb_dir)
     server_address = ("", args.port)
-    with server_class(server_address, handler_class) as httpd:
-        sa = httpd.socket.getsockname()
-        serve_message = "Serving HTTP on {host} port {port}. "
-        serve_message += "Press CTRL-\ (SIGQUIT) to quit."
-        tqdm.write(serve_message.format(host=sa[0], port=sa[1]))
-        Process(target=httpd.serve_forever).start()
+    try:
+        httpd = server_class(server_address, handler_class)
+    except OSError as error:
+        if str(error) == '[Errno 98] Address already in use':
+            print(f'OSError: {error}. Try a different port using the -p flag.')
+            sys.exit()
+        else:
+            raise error
+    sa = httpd.socket.getsockname()
+    serve_message = "Serving HTTP on {host} port {port}. "
+    serve_message += "Press CTRL-C to quit."
+    tqdm.write(serve_message.format(host=sa[0], port=sa[1]))
+    Thread(target=httpd.serve_forever).start()
+    return httpd
 
 
 def start_server_37(args):
@@ -184,11 +196,17 @@ def start_server_37(args):
     server_class = DualStackServer
     server_class.address_family, addr = _get_best_family(None, args.port)
     handler_class.protocol_version = "HTTP/1.0"
-    with server_class(addr, handler_class) as httpd:
-        host, port = httpd.socket.getsockname()[:2]
-        url_host = f'[{host}]' if ':' in host else host
-        tqdm.write(
-            f"Serving HTTP on {host} port {port}. "
-            f"Press CTRL-\ (SIGQUIT) to quit."
-        )
-        Process(target=httpd.serve_forever).start()
+    try:
+        httpd = server_class(addr, handler_class)
+    except OSError as error:
+        if str(error) == '[Errno 98] Address already in use':
+            print(f'OSError: {error}. Try a different port using the -p flag.')
+            sys.exit()
+        else:
+            raise error
+    host, port = httpd.socket.getsockname()[:2]
+    url_host = f'[{host}]' if ':' in host else host
+    tqdm.write(f"Serving HTTP on {host} port {port}. "
+               f"Press CTRL-C to quit.")
+    Thread(target=httpd.serve_forever).start()
+    return httpd

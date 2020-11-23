@@ -1,7 +1,10 @@
 import argparse
 import math
 import os
+import sys
 import shutil
+import random
+import time
 from itertools import repeat
 from multiprocessing import cpu_count
 from typing import Dict, Tuple
@@ -178,7 +181,11 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
         album['pagination'] = pagination
 
         # Images
-        for page, chunk in enumerate(chunks(sorted(files), args.pagination)):
+        if args.order == 'name':
+            files = sorted(files)
+        if args.order == 'random':
+            random.shuffle(files)
+        for page, chunk in enumerate(chunks(files, args.pagination)):
             thumbs = []
             for name in chunk:
                 small_path = os.path.join(small_root, name)
@@ -280,14 +287,22 @@ def main(args: argparse.Namespace) -> None:
     """
     args = preprocess_args(args)
     # Start the server process
-    start_server(args)
-    # Generate HTML pages
-    paths, num_pages = process_paths(args)
-    create_templates(args, num_pages)
-    # Generate thumbnails
-    if paths:
-        process_map(generate_thumbnail, paths, repeat(args), chunksize=1, 
-            max_workers=args.ncpus, desc='Generating Thumbnails  ', ncols=100)
+    try:
+        server = start_server(args)
+        # Generate HTML pages
+        paths, num_pages = process_paths(args)
+        create_templates(args, num_pages)
+        # Generate thumbnails
+        if paths:
+            process_map(generate_thumbnail, paths, repeat(args), 
+                chunksize=1, max_workers=args.ncpus, 
+                desc='Generating Thumbnails  ', ncols=100)
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print('\nKeyboard interrupt received, exiting.')
+        server.shutdown()
+        sys.exit()
 
 
 def make_parser() -> argparse.ArgumentParser:
@@ -303,21 +318,24 @@ def make_parser() -> argparse.ArgumentParser:
     parser.add_argument('--image-dir', '-d', default='', metavar='DIR',
         help='directory to scan for images (default: current directory)')
     parser.add_argument('--thumb-dir', '-s', default='shis', metavar='DIR',
-        help='directory to store thumbnails and website (default: shis)')
+        help='directory to store generated thumbnails and website (default: %(default)s)')
     parser.add_argument('--previews', '-f', action='store_true',
-        help='create separate thumbnails for full screen previews (takes more time)')
+        help='also generate fullscreen previews (takes more time)')
     parser.add_argument('--clean', '-c', action='store_true',
-        help='remove existing thubnail directory (if exists)')
-    parser.add_argument('--ncpus', '-j', type=int, default=cpu_count() - 1, metavar='CPUS',
-        help='number of workers to spawn (default: multiprocessing.cpu_count())')
+        help='remove existing thumbnail directory (if any) before processing')
+    parser.add_argument('--ncpus', '-j', type=int, default=cpu_count(), metavar='CPUS',
+        help='number of workers to spawn (default: number of available CPUs)')
     parser.add_argument('--pagination', '-n', type=int, default=200, metavar='ITEMS',
-        help='number of items to show per page (default: 200)')
+        help='number of items to show per page (default: %(default)s)')
     parser.add_argument('--port', '-p', type=int, default=7447,
-        help='port to host the server on (default: 7447)')
+        help='port to host the server on (default: %(default)s)')
+    parser.add_argument('--order', '-o', default='original', metavar='ORDER',
+        choices = ['random', 'name', 'original'], 
+        help='file listing order (choices: %(choices)s; default: %(default)s)')
     parser.add_argument('--thumb-size', type=int, default=256, metavar='SIZE',
-        help='size of the generated thumbnails in pixels (default: 256)')
+        help='size of generated thumbnails in pixels (default: %(default)s)')
     parser.add_argument('--preview-size', type=int, default=1024, metavar='SIZE',
-        help='size of full screen previews in pixels, if generated (default 1024)')
+        help='size of fullscreen previews (if generated) in pixels (default %(default)s)')
     return parser
 
 
