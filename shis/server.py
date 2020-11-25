@@ -149,6 +149,14 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
             crumbs.append(crumb)
         album['crumbs'] = crumbs
 
+        # Sort
+        if args.order == 'name':
+            files = sorted(files)
+            folders = sorted(folders)
+        if args.order == 'random':
+            random.shuffle(files)
+            random.shuffle(folders)
+
         # Albums
         albums = []
         for folder_name in folders:
@@ -181,10 +189,6 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
         album['pagination'] = pagination
 
         # Images
-        if args.order == 'name':
-            files = sorted(files)
-        if args.order == 'random':
-            random.shuffle(files)
         for page, chunk in enumerate(chunks(files, args.pagination)):
             thumbs = []
             for name in chunk:
@@ -329,7 +333,7 @@ def make_parser() -> argparse.ArgumentParser:
         help='number of items to show per page (default: %(default)s)')
     parser.add_argument('--port', '-p', type=int, default=7447,
         help='port to host the server on (default: %(default)s)')
-    parser.add_argument('--order', '-o', default='original', metavar='ORDER',
+    parser.add_argument('--order', '-o', default='name', metavar='ORDER',
         choices = ['random', 'name', 'original'], 
         help='file listing order (choices: %(choices)s; default: %(default)s)')
     parser.add_argument('--thumb-size', type=int, default=256, metavar='SIZE',
