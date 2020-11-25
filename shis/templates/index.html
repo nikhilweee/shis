@@ -65,7 +65,7 @@
         {% for thumb in album.thumbs %}
         <li data-src="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
           <a href="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
-            <img src="/{{ thumb.small }}" width="{{ thumb.width }}" height="{{ thumb.height }}">
+            <img src="/{{ thumb.small }}" loading="lazy" width="{{ thumb.width }}" height="{{ thumb.height }}">
           </a>
         </li>
         {% endfor %}
