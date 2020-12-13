@@ -1,6 +1,6 @@
-import argparse
 import os
 import sys
+import argparse
 from functools import partial
 from http.server import SimpleHTTPRequestHandler
 from threading import Thread
@@ -114,6 +114,8 @@ class CustomHTTPHandler(SimpleHTTPRequestHandler):
     :meta private:
     """
 
+    protocol_version = "HTTP/1.1"
+
     def translate_path(self, path: str) -> str:
         """Translates a path to the local filename syntax."""
         path = SimpleHTTPRequestHandler.translate_path(self, path)
@@ -160,6 +162,7 @@ def start_server_36(args):
     handler_class = CustomHTTPHandler
     server_class = partial(ThreadingHTTPServer, directory=args.thumb_dir)
     server_address = ("", args.port)
+
     try:
         httpd = server_class(server_address, handler_class)
     except OSError as error:
@@ -168,6 +171,7 @@ def start_server_36(args):
             sys.exit()
         else:
             raise error
+
     sa = httpd.socket.getsockname()
     serve_message = "Serving HTTP on {host} port {port}. "
     serve_message += "Press CTRL-C to quit."
@@ -195,7 +199,7 @@ def start_server_37(args):
     handler_class = partial(CustomHTTPHandler, directory=args.thumb_dir)
     server_class = DualStackServer
     server_class.address_family, addr = _get_best_family(None, args.port)
-    handler_class.protocol_version = "HTTP/1.0"
+
     try:
         httpd = server_class(addr, handler_class)
     except OSError as error:
@@ -204,9 +208,11 @@ def start_server_37(args):
             sys.exit()
         else:
             raise error
+
     host, port = httpd.socket.getsockname()[:2]
     url_host = f'[{host}]' if ':' in host else host
     tqdm.write(f"Serving HTTP on {host} port {port}. "
                f"Press CTRL-C to quit.")
+
     Thread(target=httpd.serve_forever).start()
     return httpd

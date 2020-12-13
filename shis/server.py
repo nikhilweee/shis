@@ -299,7 +299,7 @@ def main(args: argparse.Namespace) -> None:
         # Generate thumbnails
         if paths:
             process_map(generate_thumbnail, paths, repeat(args), 
-                chunksize=1, max_workers=args.ncpus, 
+                chunksize=1, max_workers=args.ncpus, unit_scale=True,
                 desc='Generating Thumbnails  ', ncols=100)
         while True:
             time.sleep(1)
