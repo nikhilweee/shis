@@ -1,10 +1,11 @@
 import os
 import sys
 import argparse
+import urllib.request
 from functools import partial
 from http.server import SimpleHTTPRequestHandler
 from threading import Thread
-from typing import Generator, List
+from typing import Generator, List, Tuple
 
 from tqdm import tqdm
 
@@ -127,6 +128,16 @@ class CustomHTTPHandler(SimpleHTTPRequestHandler):
     def log_message(self, format: str, *args: str) -> None:
         """A dummy function overridden to disable logging."""
         pass
+    
+    def handle(self):
+        """Handle multiple requests if necessary."""
+        self.close_connection = True
+        try:
+            self.handle_one_request()
+            while not self.close_connection:
+                self.handle_one_request()
+        except ConnectionResetError:
+            pass
 
 
 def start_server(args: argparse.Namespace) -> None:
@@ -134,11 +145,27 @@ def start_server(args: argparse.Namespace) -> None:
     
     :param args: preprocessed command line arguments.
     """
-    assert sys.version_info.major == 3, "Only Python 3 is supported."
     if sys.version_info.minor == 6:
         return start_server_36(args)
     if sys.version_info.minor >= 7:
         return start_server_37(args)
+
+
+def get_public_ip(host: str, port: int) -> Tuple[str, int]:
+    """Try to determine the public IP of the server.
+
+    :param host: the fallback host to return in case of an error
+    :param port: the port to check for public availability
+    """
+    try:
+        with urllib.request.urlopen('https://api.ipify.org') as r:
+            public_host = r.read().decode('utf-8')
+        with urllib.request.urlopen(f'http://{public_host}:{port}/') as r:
+            status = r.getcode()
+        host = public_host
+    except urllib.error.URLError as error:
+        pass
+    return host, port
 
 
 def start_server_36(args):
@@ -151,8 +178,8 @@ def start_server_36(args):
 
     class CustomHTTPServer(HTTPServer):
         def __init__(self, server_address: str, 
-                    RequestHandlerClass: HTTPServer=CustomHTTPHandler,
-                    directory: str=os.getcwd()):
+                     RequestHandlerClass: HTTPServer=CustomHTTPHandler,
+                     directory: str=os.getcwd()):
             self.directory = directory
             HTTPServer.__init__(self, server_address, RequestHandlerClass)
 
@@ -172,11 +199,14 @@ def start_server_36(args):
         else:
             raise error
 
-    sa = httpd.socket.getsockname()
-    serve_message = "Serving HTTP on {host} port {port}. "
-    serve_message += "Press CTRL-C to quit."
-    tqdm.write(serve_message.format(host=sa[0], port=sa[1]))
     Thread(target=httpd.serve_forever).start()
+
+    host, port = httpd.socket.getsockname()
+    host, port = get_public_ip(host, port)
+    serve_message = "Serving HTTP on {host}:{port}. "
+    serve_message += "Press CTRL-C to quit."
+    tqdm.write(serve_message.format(host=host, port=port))
+
     return httpd
 
 
@@ -208,11 +238,12 @@ def start_server_37(args):
             sys.exit()
         else:
             raise error
+    
+    Thread(target=httpd.serve_forever).start()
 
     host, port = httpd.socket.getsockname()[:2]
-    url_host = f'[{host}]' if ':' in host else host
-    tqdm.write(f"Serving HTTP on {host} port {port}. "
+    host, port = get_public_ip(host, port)
+    tqdm.write(f"Serving HTTP on {host}:{port}. "
                f"Press CTRL-C to quit.")
 
-    Thread(target=httpd.serve_forever).start()
     return httpd
