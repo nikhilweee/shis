@@ -205,8 +205,8 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
                     width = width * args.thumb_size / height
                     height = args.thumb_size
                 if width == height:
-                    width = args.thumb_size * 0.8
-                    height = args.thumb_size * 0.8
+                    width = args.thumb_size
+                    height = args.thumb_size
                 if width > height:
                     width = width * args.thumb_size / height
                     height = args.thumb_size

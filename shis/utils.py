@@ -136,7 +136,7 @@ class CustomHTTPHandler(SimpleHTTPRequestHandler):
             self.handle_one_request()
             while not self.close_connection:
                 self.handle_one_request()
-        except ConnectionResetError:
+        except (ConnectionResetError, BrokenPipeError):
             pass
 
 
