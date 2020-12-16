@@ -57,6 +57,7 @@ def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespac
         # Save Full
         full_dest = os.path.relpath(in_file, os.path.dirname(full_file))
         os.symlink(full_dest, full_file)
+        # shutil.copy(in_file, full_file)
         return
     except Exception as e:
         return e

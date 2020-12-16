@@ -30,6 +30,7 @@ There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP inst
 
 # Preview
 <!--
+    # shutil.copy(in_file, full_file) instead of os.symlink(full_dest, full_file)
     python -m shis.server -d imagenet-sample-images -s demo -n 100 -f -c
     find demo -type f -name "*.html" -exec sed -i "s/\"\//\"\/shis\//g" {} \;
     git subtree push --prefix demo/ origin gh-pages
