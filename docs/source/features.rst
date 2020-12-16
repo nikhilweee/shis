@@ -64,3 +64,10 @@ More often than not, the correct orientation of an image is stored in its
 EXIF data. SHIS will honor the EXIF orientation (if present) in an image and
 rotate it accordingly. This means you no longer have to worry about rotating
 images anymore.
+
+Determine Public IP
+-------------------
+In a scenario where you're running SHIS on a remove VM such as EC2, it's
+helpful to know the public IP of the server. SHIS tries to determine the
+public IP of your machine, and displays that address whenever possible.
+This means you no longer have to remember the public IP of your server.

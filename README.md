@@ -50,29 +50,30 @@ Here's an example of what you can expect to see. A live preview is also availabl
 # Usage
 The following options are available. You can also access this via `python -m shis.server -h`. Further documentation can be found at [shis.readthedocs.io](https://shis.readthedocs.io).
 ```
-usage: python -m shis.server [-h] [--image-dir DIR] [--thumb-dir DIR] [--previews] [--clean] [--ncpus CPUS]
-                             [--pagination ITEMS] [--port PORT] [--order ORDER] [--thumb-size SIZE]
-                             [--preview-size SIZE]
+usage: python -m shis.server [-h] [--image-dir DIR] [--thumb-dir DIR]
+                             [--port PORT] [--pagination ITEMS] [--order ORDER]
+                             [--ncpus CPUS] [--clean] [--previews]
+                             [--thumb-size SIZE] [--preview-size SIZE]
 
 A drop in replacement for python -m http.server, albeit for images.
 
 optional arguments:
   -h, --help            show this help message and exit
   --image-dir DIR, -d DIR
-                        directory to scan for images (default: current directory)
+                        directory to scan for images (default: current dir)
   --thumb-dir DIR, -s DIR
-                        directory to store generated thumbnails and website (default: shis)
-  --previews, -f        also generate fullscreen previews (takes more time)
-  --clean, -c           remove existing thumbnail directory (if any) before processing
-  --ncpus CPUS, -j CPUS
-                        number of workers to spawn (default: number of available CPUs)
-  --pagination ITEMS, -n ITEMS
-                        number of items to show per page (default: 200)
+                        directory to store generated content (default: shis)
   --port PORT, -p PORT  port to host the server on (default: 7447)
+  --pagination ITEMS, -n ITEMS
+                        number of items to display per page (default: 200)
   --order ORDER, -o ORDER
-                        file listing order (choices: random, name, original; default: name)
+                        image listing order: name (default), random, original
+  --ncpus CPUS, -j CPUS
+                        number of workers to spawn (default: available CPUs)
+  --clean, -c           remove existing --thumb-dir (if any) before processing
+  --previews, -f        also generate fullscreen previews (takes more time)
   --thumb-size SIZE     size of generated thumbnails in pixels (default: 256)
-  --preview-size SIZE   size of fullscreen previews (if generated) in pixels (default 1024)
+  --preview-size SIZE   size of generated previews in pixels (default: 1024)
 ```
 
 
