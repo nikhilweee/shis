@@ -3,7 +3,7 @@ import sys
 import argparse
 import urllib.request
 from functools import partial
-from http.server import SimpleHTTPRequestHandler
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 from threading import Thread
 from typing import Generator, List, Tuple
 
@@ -129,7 +129,7 @@ class CustomHTTPHandler(SimpleHTTPRequestHandler):
         """A dummy function overridden to disable logging."""
         pass
     
-    def handle(self):
+    def handle(self) -> None:
         """Handle multiple requests if necessary."""
         self.close_connection = True
         try:
@@ -140,7 +140,7 @@ class CustomHTTPHandler(SimpleHTTPRequestHandler):
             pass
 
 
-def start_server(args: argparse.Namespace) -> None:
+def start_server(args: argparse.Namespace) -> HTTPServer:
     """Start a Simple HTTP Server as a separate thread.
     
     :param args: preprocessed command line arguments.
@@ -174,7 +174,6 @@ def start_server_36(args):
     :meta private:
     """
     import socketserver
-    from http.server import HTTPServer
 
     class CustomHTTPServer(HTTPServer):
         def __init__(self, server_address: str, 
