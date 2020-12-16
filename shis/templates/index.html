@@ -16,37 +16,29 @@
 
     <div id="container">
 
-      <!--
-        Gallery title
-      -->
+      <!-- Gallery title -->
       <header>
         <h1><a href="">{{ album.name }}</a></h1>
       </header>
     
-      <!--
-        Breadcrumbs of parent albums
-      -->
+      <!-- Breadcrumbs of parent albums -->
       <nav id="breadcrumbs" class="breadcrumbs">
-        {% for crumb in album.crumbs %}
+        {%- for crumb in album.crumbs -%}
           <a class="breadcrumb-item" href="/{{ crumb.url }}">{{ crumb.name }}</a>
-          {% if not loop.last %}
-          &nbsp;/&nbsp;
-          {% endif %}
-        {% endfor %}
+          {%- if not loop.last -%} &nbsp;/&nbsp; {%- endif -%}
+        {%- endfor -%}
       </nav>
 
-      <!--
-        Nested albums, if any
-      -->
+      <!-- Nested albums, if any -->
       <div id="albums">
-        {% for album in album.albums %}
+        {%- for album in album.albums -%}
         <a href="/{{ album.url }}" style="background-image: url('/{{ album.image }}')">
           <div class="info">
             <h3>{{ album.name }}</h3>
             <div class="summary">{{ album.size }} items</div>
           </div>
         </a>
-        {% endfor %}
+        {%- endfor -%}
       </div>
 
       <!-- Pagination -->
@@ -58,9 +50,7 @@
       </nav>  
       {% endif %}
     
-      <!--
-        All photos and videos
-      -->
+      <!-- All photos and videos -->
       <ul id="media" class="clearfix">
         {% for thumb in album.thumbs %}
         <li data-src="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
@@ -80,9 +70,13 @@
         {% endfor %}
       </nav>
       {% endif %}
-      
+
+      <footer>
+        Created using <a href="https://github.com/nikhilweee/shis">SHIS</a>.
+      </footer>
+
     </div>
-  
+
     <!-- jQuery -->
     <script src="/static/jquery.min.js"></script>
     <!-- LightGallery -->
