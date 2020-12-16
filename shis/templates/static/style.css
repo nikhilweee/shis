@@ -118,6 +118,7 @@
     display: inline-block;
     position: relative;
     border-radius: 8px;
+    overflow: hidden;
   }
   #media img {
     border-radius: 8px;
