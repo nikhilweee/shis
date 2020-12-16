@@ -49,29 +49,27 @@
     font-weight: bold;
   }
   h1 a {
-    color: #444;
+    color: #001f3f;
   }
   footer {
-    color: #666;
+    color: #444;
     font-size: 0.9em;
-    font-style: italic;
-    margin-top: 3em;
   }
   footer a {
-    color: #17baef;
+    color: #001f3f;
   }
   nav.breadcrumbs {
     border-bottom: 1px solid #ddd;
     font-size: 1.2em;
     margin-bottom: 1em;
-    padding: 0em 0em 0.8em 0.1em;
+    padding: 0em 0em 0.8em 0em;
   }
   nav.breadcrumbs a,
   nav span {
     display: inline;
   }
   nav.breadcrumbs a {
-    color: #444;
+    color: #001f3f;
     text-decoration: none;
   }
   #albums,
@@ -147,14 +145,14 @@
 
   nav.breadcrumbs a {
     display: inline-block;
-    padding: 0.2em;
+    padding: 0.2em 0em 0.2em 0em;
   }
 
   nav.breadcrumbs-bottom {
     border-bottom: none;
     border-top: 1px solid #ddd;
     margin: 1em 0 0 0;
-    padding: 0.8em 0em 0.8em 0.1em;
+    padding: 0.8em 0em 0.8em 0em;
   }
 
   #media .info {

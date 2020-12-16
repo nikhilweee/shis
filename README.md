@@ -29,7 +29,11 @@ There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP inst
 
 
 # Preview
-<!-- git subtree push --prefix demo/ origin gh-pages -->
+<!--
+    python -m shis.server -d imagenet-sample-images -s demo -n 100 -f -c
+    find demo -type f -name "*.html" -exec sed -i "s/\"\//\"\/shis\//g" {} \;
+    git subtree push --prefix demo/ origin gh-pages
+-->
 Here's an example of what you can expect to see. A live preview is also available at
 [nikhilweee.github.io/shis](https://nikhilweee.github.io/shis).
 ![Demo](https://raw.githubusercontent.com/nikhilweee/shis/main/static/demo.png)
