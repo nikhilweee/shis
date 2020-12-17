@@ -38,8 +38,8 @@ Finally, run ``shis.server`` the same way you'd run ``http.server`` ::
    # Serving HTTP on 0.0.0.0:7447. Press CTRL-C to quit.
    # Processing images from : directory/containing/images
    # Creating thumbnails in : directory/containing/images/shis
-   # Generating Website     : 100%|████████████████████| 2/2 [00:00<00:00, 35.09it/s]
-   # Generating Thumbnails  : 100%|███████████████| 120/120 [00:00<00:00, 132.48it/s]
+   # Generating Website     : 100%|████████████████████|     4/    4 [00:00<00:00,  49.82it/s]
+   # Generating Thumbnails  : 100%|████████████████████|   300/  300 [00:00<00:00,  1.47kit/s]
 
 There. You should now be able to view the images at ``http://0.0.0.0:7447/``
 For more information on advanced usage, please see :doc:`usage`. For a list of 
