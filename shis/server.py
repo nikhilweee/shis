@@ -261,7 +261,9 @@ def create_templates(args: argparse.Namespace, num_pages: int) -> None:
     )
 
     for album, page in tqdm(generate_albums(args),
-        desc="Generating Website     ", total=num_pages, ncols=100):
+        desc="Generating Website     ", total=num_pages, ncols=100,
+        bar_format=("{l_bar}{bar:20}| {n_fmt:>5}/{total_fmt:>5} "
+        "[{elapsed}<{remaining}, {rate_fmt:>10}{postfix}]")):
         template = env.get_template('index.html')
         url = album['pagination'][page]['url']
         html = f'{args.thumb_dir}/{url}'
@@ -301,7 +303,9 @@ def main(args: argparse.Namespace) -> None:
         if paths:
             process_map(generate_thumbnail, paths, repeat(args), 
                 chunksize=1, max_workers=args.ncpus, unit_scale=True,
-                desc='Generating Thumbnails  ', ncols=100)
+                desc='Generating Thumbnails  ', ncols=100, 
+                bar_format=("{l_bar}{bar:20}| {n_fmt:>5}/{total_fmt:>5} "
+                "[{elapsed}<{remaining}, {rate_fmt:>10}{postfix}]"))
         while True:
             time.sleep(1)
     except KeyboardInterrupt:

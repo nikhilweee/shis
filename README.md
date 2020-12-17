@@ -22,8 +22,8 @@ $ python -m shis.server
 # Serving HTTP on 0.0.0.0:7447. Press CTRL-C to quit.
 # Processing images from : directory/containing/images
 # Creating thumbnails in : directory/containing/images/shis
-# Generating Website     : 100%|████████████████████| 2/2 [00:00<00:00, 35.09it/s]
-# Generating Thumbnails  : 100%|███████████████| 120/120 [00:00<00:00, 132.48it/s]
+# Generating Website     : 100%|████████████████████|     4/    4 [00:00<00:00,  49.82it/s]
+# Generating Thumbnails  : 100%|████████████████████|   300/  300 [00:00<00:00,  1.47kit/s]
 ```
 There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP instead).
 
