@@ -139,6 +139,7 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
         slug = slugify(slug_path)
         name = os.path.basename(slug_path)
         album = {'name': name}
+        files = list(filter(filter_image, files))
 
         # Breadcrumbs
         crumbs = []
