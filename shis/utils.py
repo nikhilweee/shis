@@ -158,11 +158,13 @@ def get_public_ip(host: str, port: int) -> Tuple[str, int]:
     :param port: the port to check for public availability
     """
     try:
-        with urllib.request.urlopen('https://api.ipify.org') as r:
+        with urllib.request.urlopen('https://api.ipify.org', timeout=5) as r:
             public_host = r.read().decode('utf-8')
-        with urllib.request.urlopen(f'http://{public_host}:{port}/') as r:
+            shis_server_url = f'http://{public_host}:{port}/'
+        with urllib.request.urlopen(shis_server_url, timeout=5) as r:
             status = r.getcode()
-        host = public_host
+        if status == 200:
+            host = public_host
     except urllib.error.URLError as error:
         pass
     return host, port

@@ -27,6 +27,11 @@ $ python -m shis.server
 ```
 There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP instead).
 
+**TIP**: You can install the latest development version directly from GitHub.
+```
+$ pip install git+https://github.com/nikhilweee/shis/
+```
+
 
 # Preview
 <!--
