@@ -170,6 +170,29 @@ def get_public_ip(host: str, port: int) -> Tuple[str, int]:
     return host, port
 
 
+def start_httpd(server: HTTPServer, address: Tuple[str, int], 
+    handler: SimpleHTTPRequestHandler, args: argparse.Namespace) -> HTTPServer:
+    """Try to start an HTTPServer, choosing the next available port.
+
+    :param server: the server class to execute
+    :param address: the address to start the server on
+    :param handler: the request handler to use with the server
+    :param args: preprocessed command line arguments
+    """
+    try:
+        return server(address, handler)
+    except OSError as error:
+        if str(error) == '[Errno 98] Address already in use':
+            if args.port is not None or address[1] > 7500:
+                print(f'OSError: {error}. Try a different port using the -p flag.')
+                sys.exit()
+            else:
+                address = (address[0], address[1]+1)
+                return start_httpd(server, address, handler, args)
+        else:
+            raise error
+
+
 def start_server_36(args):
     """Start an HTTP Server on Python 3.6.
     
@@ -189,16 +212,8 @@ def start_server_36(args):
     
     handler_class = CustomHTTPHandler
     server_class = partial(ThreadingHTTPServer, directory=args.thumb_dir)
-    server_address = ("", args.port)
-
-    try:
-        httpd = server_class(server_address, handler_class)
-    except OSError as error:
-        if str(error) == '[Errno 98] Address already in use':
-            print(f'OSError: {error}. Try a different port using the -p flag.')
-            sys.exit()
-        else:
-            raise error
+    server_address = ("", args.port or 7447)
+    httpd = start_httpd(server_class, server_address, handler_class, args)
 
     Thread(target=httpd.serve_forever).start()
 
@@ -217,7 +232,7 @@ def start_server_37(args):
     :meta private:
     """    
     import contextlib
-    from http.server import ThreadingHTTPServer, _get_best_family, test
+    from http.server import ThreadingHTTPServer, _get_best_family
 
     class DualStackServer(ThreadingHTTPServer):
         def server_bind(self):
@@ -229,16 +244,9 @@ def start_server_37(args):
 
     handler_class = partial(CustomHTTPHandler, directory=args.thumb_dir)
     server_class = DualStackServer
-    server_class.address_family, addr = _get_best_family(None, args.port)
-
-    try:
-        httpd = server_class(addr, handler_class)
-    except OSError as error:
-        if str(error) == '[Errno 98] Address already in use':
-            print(f'OSError: {error}. Try a different port using the -p flag.')
-            sys.exit()
-        else:
-            raise error
+    server_class.address_family, server_address = \
+        _get_best_family(None, args.port or 7447)
+    httpd = start_httpd(server_class, server_address, handler_class, args)
     
     Thread(target=httpd.serve_forever).start()
 
