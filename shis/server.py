@@ -329,8 +329,8 @@ def make_parser() -> argparse.ArgumentParser:
         help='directory to scan for images (default: current dir)')
     parser.add_argument('--thumb-dir', '-s', default='shis', metavar='DIR',
         help='directory to store generated content (default: %(default)s)')
-    parser.add_argument('--port', '-p', type=int, default=7447,
-        help='port to host the server on (default: %(default)s)')
+    parser.add_argument('--port', '-p', type=int, default=None,
+        help='port to host the server on (default: 7447)')
     parser.add_argument('--pagination', '-n', type=int, default=200, metavar='ITEMS',
         help='number of items to display per page (default: %(default)s)')
     parser.add_argument('--order', '-o', default='name', metavar='ORDER',
