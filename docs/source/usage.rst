@@ -79,6 +79,13 @@ Usage
         By default, SHIS is configured to use all available CPU cores for
         maximum performance.
 
+    --watch -w : @after
+        SHIS can watch the filesystem for changes and keep the website up to
+        date by automatically creating thumbnails for newer files and deleting
+        them for old ones. This option specifies the time interval (in seconds)
+        to wait before scanning the filesystem for changes. This ability to
+        continuously monitor the filesystem is disabled by default.
+
     --pagination -n : @after
         This is the maximum number of thumbnails displayed in a single page on
         the website. The rest of the images are distributed across multiple
