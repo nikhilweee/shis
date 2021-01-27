@@ -62,8 +62,9 @@ The following options are available. You can also access this via `python -m shi
 ```
 usage: python -m shis.server [-h] [--image-dir DIR] [--thumb-dir DIR]
                              [--port PORT] [--pagination ITEMS] [--order ORDER]
-                             [--ncpus CPUS] [--clean] [--previews]
-                             [--thumb-size SIZE] [--preview-size SIZE]
+                             [--ncpus CPUS] [--watch [SEC]] [--clean]
+                             [--previews] [--thumb-size SIZE]
+                             [--preview-size SIZE]
 
 A drop in replacement for python -m http.server, albeit for images.
 
@@ -77,9 +78,11 @@ optional arguments:
   --pagination ITEMS, -n ITEMS
                         number of items to display per page (default: 200)
   --order ORDER, -o ORDER
-                        image listing order: name (default), random, original
+                        image listing order: name (default), random, or original
   --ncpus CPUS, -j CPUS
                         number of workers to spawn (default: available CPUs)
+  --watch [SEC], -w [SEC]
+                        filesystem watch interval in seconds (default: False)
   --clean, -c           remove existing --thumb-dir (if any) before processing
   --previews, -f        also generate fullscreen previews (takes more time)
   --thumb-size SIZE     size of generated thumbnails in pixels (default: 256)
