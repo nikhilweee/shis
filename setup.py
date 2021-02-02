@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     package_data={'shis': ['templates/*', 'templates/*/*']},
     license="MIT",
-    install_requires=['Pillow>=7.0.0', 'Jinja2', 'tqdm'],
+    install_requires=['Pillow>=7.0.0', 'Jinja2', 'tqdm', 'imagesize'],
     python_requires='>=3.6',
     project_urls={
         'Documentation': 'https://shis.readthedocs.io/',
