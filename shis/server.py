@@ -9,10 +9,11 @@ from itertools import repeat
 from multiprocessing import cpu_count
 from typing import Dict, Tuple
 
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-from PIL import Image, ImageOps, UnidentifiedImageError
+import imagesize
 from tqdm import tqdm
+from PIL import Image, ImageOps
 from tqdm.contrib.concurrent import process_map
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from shis.utils import (chunks, filter_image, rreplace, slugify,
                         start_server, urlify, fixed_width_formatter)
@@ -214,10 +215,9 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
                 full_path = os.path.join(full_root, name)
                 real_path = os.path.join(index_root, name)
                 try:
-                    im = Image.open(real_path)
-                except UnidentifiedImageError:
+                    width, height = imagesize.get(real_path)
+                except ValueError:
                     continue
-                width, height = im.size
                 if width < height:
                     width = width * args.thumb_size / height
                     height = args.thumb_size

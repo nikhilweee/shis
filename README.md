@@ -51,10 +51,11 @@ Here's an example of what you can expect to see. A live preview is also availabl
 * Uses multiple processes to create thumbails, so it's fast.
 * Efficient resumes, so we build on past progress.
 * Creates both small and large size thumbnails, so it's easy on your eyes.
-* Minimal dependencies - just Pillow, Jinja2 and tqdm.
+* Minimal dependencies - Pillow, Jinja2, tqdm, and imagesize.
 * Server side pagination, so it's easy on your browser.
 * Tries to preserve EXIF orientation, so you don't have to rotate manually.
 * Displays the public IP (if exists), so you don't have to remember.
+* Watches the filesystem continuously for changes, so you don't have to refresh.
 
 
 # Usage
