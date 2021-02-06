@@ -81,12 +81,12 @@
     <script src="/static/jquery.min.js"></script>
     <!-- LightGallery -->
     <script src="/static/lightgallery.min.js"></script>
+    <script src="/static/lg-zoom.min.js"></script>
 
     <script>
       $(document).ready(function() {
 
         $("#media").lightGallery({
-          // download: false,
           // currentPagerPosition: 'middle',
           speed: 0,
           toogleThumb: false,
@@ -94,7 +94,9 @@
           backdropDuration: 0,
           // thumbMargin: 11,
           slideEndAnimatoin: false,
-          startClass:''
+          startClass: '',
+          zoom: true,
+          preload: 5
         });
 
       });
