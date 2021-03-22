@@ -87,16 +87,26 @@
       $(document).ready(function() {
 
         $("#media").lightGallery({
-          // currentPagerPosition: 'middle',
           speed: 0,
           toogleThumb: false,
-          // hideBarsDelay: 3600000,
           backdropDuration: 0,
-          // thumbMargin: 11,
           slideEndAnimatoin: false,
           startClass: '',
           zoom: true,
           preload: 5
+        });
+
+        $(document).keypress(function(e) {
+          if (e.which === 61) {
+            // zoom in on =
+            $('#lg-zoom-in').click();
+          } else if (e.which === 45) {
+            // zoom out on -
+            $('#lg-zoom-out').click();
+          } else if (e.which === 48) {
+            // reset on 0
+            $('#lg-actual-size').click();
+          }
         });
 
       });
