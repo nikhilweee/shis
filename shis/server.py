@@ -276,6 +276,13 @@ def create_templates(args: argparse.Namespace, num_pages: int) -> None:
         autoescape=select_autoescape(['html', 'xml'])
     )
 
+    image_root = os.path.basename(args.image_dir)
+    redir_html = os.path.join(args.thumb_dir, 'index.html')
+    with open(redir_html, 'w') as f:
+        f.write(f'<html><head><meta http-equiv="Refresh" '
+                f'content="0; URL=/html/{image_root}"></head></html>')
+
+
     with tqdm(generate_albums(args),
         desc="Generating Website     ", total=num_pages, ncols=100,
         bar_format=("{l_bar}{bar:20}| {n_fmt:>5}/{total_fmt:>5} "
@@ -283,7 +290,10 @@ def create_templates(args: argparse.Namespace, num_pages: int) -> None:
         for album, page in generate_albums(args):
             template = env.get_template('index.html')
             url = album['pagination'][page]['url']
-            html = f'{args.thumb_dir}/{url}'
+            html = f'{args.thumb_dir}/{url}/index.html'
+            html_dir = os.path.dirname(html)
+            if not os.path.isdir(html_dir):
+                os.makedirs(html_dir, exist_ok=True)
             template.stream(album=album).dump(html)
             # Handle tqdm when files are still being added
             pbar.update(1)

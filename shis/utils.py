@@ -46,10 +46,8 @@ def slugify(path: str) -> str:
     :param path: the path to slugify.
     :return: the slugified path.
     """
-    if os.path.sep not in path:
-        return 'index'
-    else:
-        return '-'.join(path.split(os.path.sep))
+    return '/'.join(path.split(os.path.sep))
+
 
 
 def urlify(slug: str, page=1) -> str:
@@ -60,12 +58,9 @@ def urlify(slug: str, page=1) -> str:
     :return: the path of the HTML page described by :attr:`slug`.
     """
     if page > 1:
-        url = f'html/{slug}-{page}.html'
+        url = f'html/{slug}/page/{page}/'
     else:
-        if slug == 'index':
-            url = f'{slug}.html'
-        else:
-            url = f'html/{slug}.html'
+        url = f'html/{slug}/'
     return url
 
 
