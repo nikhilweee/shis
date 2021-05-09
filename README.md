@@ -56,6 +56,7 @@ Here's an example of what you can expect to see. A live preview is also availabl
 * Tries to preserve EXIF orientation, so you don't have to rotate manually.
 * Displays the public IP (if exists), so you don't have to remember.
 * Watches the filesystem continuously for changes, so you don't have to refresh.
+* Added selection capabilities, so you can visually filter files.
 
 
 # Usage
