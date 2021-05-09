@@ -97,7 +97,11 @@
     float: right;
     display: flex;
     align-items: center;
-    position: relative;
+    position: fixed;
+    padding: 1em;
+    top: 0;
+    right: 0;
+    z-index: 10;
   }
 
   .clipboard-button {
@@ -108,6 +112,7 @@
 
   .mode-button {
     border: 2px solid rgba(0, 0, 0, 0.81);
+    background-color: #ffffff;
     margin-left: 0.5em;
     border-radius: 4px;
     font: inherit;
@@ -127,6 +132,12 @@
 
   .notification {
     border: none;
+    background-color: transparent;
+  }
+
+  .notification.visible{
+    border: 2px solid rgba(0, 0, 0, 0.81);
+    background-color: #ffffff;
   }
 
 /* 

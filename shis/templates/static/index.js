@@ -43,14 +43,12 @@ const selection = new SelectionArea({
 // Selection Logic
 
 selection.on('start', ({ event, store }) => {
-    // console.log('start', capture(store));
     let target = event.target.parentNode;
     if (target.classList.contains('selected')) {
         target.classList.remove('selected');
         store.changed.removed.push(target);
     }
 }).on('move', ({ store }) => {
-    // console.log('move', capture(store));
     for (const el of store.changed.added) {
         el.classList.add('selected');
     }
@@ -58,9 +56,12 @@ selection.on('start', ({ event, store }) => {
         el.classList.remove('selected');
     }
 }).on('stop', ({ store }) => {
-    // console.log('stop', capture(store));
     selection.keepSelection();
-    // console.log('end', capture(store));
+    store.stored = store.stored.filter((item, index, self) =>
+        index === self.findIndex((t) => (
+            t.innerText === item.innerText
+        ))
+    )
 });
 
 // Capture object when it's logged
@@ -70,7 +71,6 @@ function clearEmpties(o) {
         if (!o[k] || typeof o[k] !== "object") {
             continue // If null or not an object, skip to the next iteration
         }
-
         // The property is an object
         clearEmpties(o[k]); // <-- Make a recursive call on the nested object
         if (Object.keys(o[k]).length === 0) {
@@ -80,7 +80,7 @@ function clearEmpties(o) {
 }
 
 function capture(object) {
-    let whitelist = ['stored', 'selected', 'changed', 'added', 'removed', 'tagName', 'classList'];
+    let whitelist = ['stored', 'selected', 'changed', 'added', 'removed', 'tagName', 'classList', 'innerText'];
     let parsed = JSON.parse(JSON.stringify(object, whitelist, 2));
     clearEmpties(parsed);
     return JSON.stringify(parsed, null, 2);
@@ -104,8 +104,12 @@ let notifTimer;
 function showNotification(text) {
     clearTimeout(notifTimer);
     const notif = document.querySelector('.notification');
+    notif.classList.add('visible');
     notif.innerText = text;
-    notifTimer = setTimeout(() => {notif.innerText = '';}, 3000);
+    notifTimer = setTimeout(() => {
+        notif.innerText = '';
+        notif.classList.remove('visible')
+    }, 3000);
 }
 
 function copySelection() {
@@ -114,7 +118,7 @@ function copySelection() {
         return element.querySelector('div.info').innerText
     })
     textToClipboard(paths.join("\r\n"));
-    let notifText = 'Copied ' + paths.length + ' filenames to the clipboard!';
+    let notifText = 'Copied ' + paths.length + ' filenames to the clipboard';
     showNotification(notifText);
 }
 
@@ -125,7 +129,7 @@ function toggleSelection() {
             element.classList.remove('selected');
         }
         selection.clearSelection();
-        showNotification('Deselected all elements!');            
+        showNotification('Deselected ' + elements.length + ' elements');
     } else {
         elements = document.querySelectorAll('#media > li');
         for (const element of elements) {
@@ -133,6 +137,6 @@ function toggleSelection() {
             selection.select(element);
         }
         selection.keepSelection();
-        showNotification('Selected all elements!');            
+        showNotification('Selected ' + elements.length + ' elements');
     }
 }
