@@ -88,13 +88,15 @@ function capture(object) {
 
 // Helper function to copy file list to clipboard.
 
+const fileNames = document.createElement("textarea");
+fileNames.id = 'fileNames';
+fileNames.style.display = 'none';
+document.body.appendChild(fileNames);
+
 function textToClipboard(text) {
-    let dummy = document.createElement("textarea");
-    document.body.appendChild(dummy);
-    dummy.value = text;
-    dummy.select();
+    fileNames.value = text;
+    fileNames.select();
     document.execCommand("copy");
-    document.body.removeChild(dummy);
 }
 
 // Copy and Clear Selection buttons.
@@ -118,7 +120,7 @@ function copySelection() {
         return element.querySelector('div.info').innerText
     })
     textToClipboard(paths.join("\r\n"));
-    let notifText = 'Copied ' + paths.length + ' filenames to the clipboard';
+    let notifText = 'Copied ' + paths.length + ' fileNames to the clipboard';
     showNotification(notifText);
 }
 
@@ -140,3 +142,19 @@ function toggleSelection() {
         showNotification('Selected ' + elements.length + ' elements');
     }
 }
+
+// Alert if there are selected items which haven't been copied
+
+window.onbeforeunload = function(){
+    let copiedLength
+    if (fileNames.value.length == 0) {
+        copiedLength = 0;
+    } else {
+        copiedLength = fileNames.value.split('\n').length
+    }
+    let selectedLength = selection.getSelection().length;
+    if (copiedLength != selectedLength) {
+        return 'There are unselected elements left to be copied! Are you sure you want to leave?'
+    }
+    return undefined;
+};
