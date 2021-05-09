@@ -19,8 +19,21 @@
       <!-- Gallery title -->
       <header>
         <h1><a href="">{{ album.name }}</a></h1>
+        <div class="mode">
+          <button class="mode-button notification">
+            <!-- This button holds notification text -->
+          </button>
+          <button class="mode-button" onclick="toggleSelection();">
+            Toggle
+            <input class="clipboard-button" type="image" src="/static/select.svg" title="Toggle selection." />
+          </button>
+          <button class="mode-button" onclick="copySelection();">
+            Copy
+            <input class="clipboard-button" type="image" src="/static/copy.svg" title="Copy selected file names to clipboard." />
+          </button>
+        </div>
       </header>
-    
+
       <!-- Breadcrumbs of parent albums -->
       <nav id="breadcrumbs" class="breadcrumbs">
         {%- for crumb in album.crumbs -%}
@@ -53,11 +66,9 @@
       <!-- All photos and videos -->
       <ul id="media" class="clearfix">
         {% for thumb in album.thumbs %}
-        <li data-src="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
-          <a href="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}" data-sub-html="{{ thumb.name }}">
+        <li>
             <img src="/{{ thumb.small }}" loading="eager" width="{{ thumb.width }}" height="{{ thumb.height }}">
-            <div class="info">{{ thumb.name }}</div>
-          </a>
+            <div class="info" data-sub-html="{{ thumb.name }}" data-src="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}">{{ thumb.name }}</div>
         </li>
         {% endfor %}
       </ul>
@@ -77,40 +88,11 @@
 
     </div>
 
-    <!-- jQuery -->
     <script src="/static/jquery.min.js"></script>
-    <!-- LightGallery -->
     <script src="/static/lightgallery.min.js"></script>
     <script src="/static/lg-zoom.min.js"></script>
-
-    <script>
-      $(document).ready(function() {
-
-        $("#media").lightGallery({
-          speed: 0,
-          toogleThumb: false,
-          backdropDuration: 0,
-          slideEndAnimatoin: false,
-          startClass: '',
-          zoom: true,
-          preload: 5
-        });
-
-        $(document).keypress(function(e) {
-          if (e.which === 61) {
-            // zoom in on =
-            $('#lg-zoom-in').click();
-          } else if (e.which === 45) {
-            // zoom out on -
-            $('#lg-zoom-out').click();
-          } else if (e.which === 48) {
-            // reset on 0
-            $('#lg-actual-size').click();
-          }
-        });
-
-      });
-    </script>
+    <script src="/static/selection.min.js"></script>
+    <script src="/static/index.js"></script>
 
   </body>
 
