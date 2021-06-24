@@ -19,15 +19,15 @@ cd /directory/containing/images
 Remember `python -m http.server`? Great. SHIS runs the same way.
 ```
 python -m shis.server
-
+```
+There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP instead). SHIS will generate thumbnails in the meanwhile.
+```
 # Serving HTTP on 0.0.0.0:7447. Press CTRL-C to quit.
 # Processing images from : directory/containing/images
 # Creating thumbnails in : directory/containing/images/shis
 # Generating Website     : 100%|████████████████████|     4/    4 [00:00<00:00,  49.82it/s]
 # Generating Thumbnails  : 100%|████████████████████|   300/  300 [00:00<00:00,  1.47kit/s]
 ```
-There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP instead).
-
 **TIP**: You can install the latest development version directly from GitHub.
 ```
 pip install git+https://github.com/nikhilweee/shis/
