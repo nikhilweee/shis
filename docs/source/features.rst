@@ -65,9 +65,31 @@ EXIF data. SHIS will honor the EXIF orientation (if present) in an image and
 rotate it accordingly. This means you no longer have to worry about rotating
 images anymore.
 
-Determine Public IP
--------------------
+Determines public IP
+--------------------
 In a scenario where you're running SHIS on a remove VM such as EC2, it's
 helpful to know the public IP of the server. SHIS tries to determine the
 public IP of your machine, and displays that address whenever possible.
 This means you no longer have to remember the public IP of your server.
+
+Selection support
+-----------------
+SHIS makes it easier to visually filter images by adding a *Selection Mode*,
+which can be enabled using the ``-s`` or ``--selection`` flags. After you
+enable selection mode, you can select images on the website the same way
+you'd do in a file explorer. Once you have selected images, click *Copy* on
+the top right of the page, and all file names will be copied to a clipboard.
+You can then paste these file names in a text file or a terminal, and use
+the filtered file names to move or delete files. As an example, if you paste
+all file names to ``files.txt`` and you want to copy those files to another
+folder, you can simply use ``cat files.txt | xargs -i cp src/{} dest/`` on
+a unix based system.
+
+Watch filesystem for changes
+----------------------------
+SHIS can continously scan the filesystem for any changes and automatically
+update the contents of the website. To enable this functionality, simply
+use the ``-w`` or the ``--watch`` flags. By default, SHIS will scan the
+filesystem for changes every 30 seconds. You can specify the scanning
+interval (in seconds) right after the watch flag. For example, ``-w 15``
+sets the watch interval as 15 seconds.

@@ -41,7 +41,7 @@ Finally, run ``shis.server`` the same way you'd run ``http.server`` ::
    # Generating Website     : 100%|████████████████████|     4/    4 [00:00<00:00,  49.82it/s]
    # Generating Thumbnails  : 100%|████████████████████|   300/  300 [00:00<00:00,  1.47kit/s]
 
-There. You should now be able to view the images at ``http://0.0.0.0:7447/``
+There. You should now be able to view images at ``http://0.0.0.0:7447/``.
 For more information on advanced usage, please see :doc:`usage`. For a list of 
-features, please see :doc:`features`. A live preview is also available at
+features, head over to :doc:`features`. A live preview is also available at
 `nikhilweee.github.io/shis <https://nikhilweee.github.io/shis/>`_.

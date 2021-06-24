@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'shis'
-copyright = '2020, Nikhil Verma'
+copyright = '2021, Nikhil Verma'
 author = 'Nikhil Verma'
 
 # The full version, including alpha/beta/rc tags

@@ -10,7 +10,26 @@ Usage
 
     SHIS provides a number of options that can help you with customizatiion.
 
-    --image-dir -d : @after
+    -c --clean : @after
+        If ``thumb_dir`` already exists, SHIS does not attempt to remove any
+        existing thumbnails from the ``small``, ``large``, or ``full``
+        directories. In fact, SHIS uses this information to only create
+        thumbnails if they haven't already been created. However, if this
+        option is set, SHIS will clear all contents from ``thumb_dir``
+        and start afresh.
+
+    -s --selection : @after
+        This option lets you select images on the website and copy file 
+        names of selected images so you can later use them to sort/filter 
+        images on the device according to your convenience.
+
+    -p --port : @after
+        This is the port on which the generated website shall be served. By
+        default, this is set to 7447 (the T9 keys for ``shis``). If 7447 is
+        not available, SHIS will try to use the next available port (7448,
+        7449 and so on).
+
+    -d --image-dir : @after
         SHIS will recursively scan this directory and all its subdirectories
         for image files.
 
@@ -19,8 +38,24 @@ Usage
               of the following extensions:
             | ``jpeg``, ``jpg``, ``png``, or ``tiff``.
 
+    -w --watch : @after
+        SHIS can watch the filesystem for changes and keep the website up to
+        date by automatically creating thumbnails for newer files and deleting
+        them for old ones. This option specifies the time interval (in seconds)
+        to wait before scanning the filesystem for changes. This ability to
+        continuously monitor the filesystem is disabled by default.
 
-    --thumb-dir -s : @after
+    -n --pagination : @after
+        This is the maximum number of thumbnails displayed in a single page on
+        the website. The rest of the images are distributed across multiple
+        pages.
+
+    -o --order : @after
+        This is the order in which images shall be displayed. You can either
+        choose to sort images by their filename, shuffle them in random order,
+        or choose to leave the order untouched.
+
+    --thumb-dir : @after
         SHIS will store all processed files in this directory, the structure of
         which is as follows:
 
@@ -36,10 +71,8 @@ Usage
             │   ├── image.jpg -> ../../image.jpg
             │   ..
             ├── static
-            │   ├── dir-subdir.html
             │   ..
             ├── html
-            │   ├── dir-subdir.html
             │   ..
             └── index.html
 
@@ -56,7 +89,7 @@ Usage
         HTML pages are stored in ``html``.
 
 
-    --previews -f : @after
+    --previews : @after
         When a user clicks on a thumbnail in the generated website, a full
         screen preview opens up. By default, this is the original full size
         image being served. If this option is set, SHIS will explicitly create
@@ -64,43 +97,12 @@ Usage
         smaller in size compared to the original full size image) and serve
         them instead of the original full size image.
 
-    --clean -c : @after
-        If ``thumb_dir`` already exists, SHIS does not attempt to remove any
-        existing thumbnails from the ``small``, ``large``, or ``full``
-        directories. In fact, SHIS uses this information to only create
-        thumbnails if they haven't already been created. However, if this
-        option is set, SHIS will clear all contents from ``thumb_dir``
-        and start afresh.
-
-    --ncpus -j : @after
+    --ncpus : @after
         This is the number of processes that will be spawned simultaneously.
         One of these processes will be used to run an HTTP Server and the
         others will be used parallely for the purpose of processing images.
         By default, SHIS is configured to use all available CPU cores for
         maximum performance.
-
-    --watch -w : @after
-        SHIS can watch the filesystem for changes and keep the website up to
-        date by automatically creating thumbnails for newer files and deleting
-        them for old ones. This option specifies the time interval (in seconds)
-        to wait before scanning the filesystem for changes. This ability to
-        continuously monitor the filesystem is disabled by default.
-
-    --pagination -n : @after
-        This is the maximum number of thumbnails displayed in a single page on
-        the website. The rest of the images are distributed across multiple
-        pages.
-
-    --port -p : @after
-        This is the port on which the generated website shall be served. By
-        default, this is set to 7447 (the T9 keys for ``shis``). If you ever
-        encounter ``OSError: [Errno 98] Address already in use`` while running
-        SHIS, this is the option that you should change.
-
-    --order -o : @after
-        This is the order in which images shall be displayed. You can either
-        choose to sort images by their filename, shuffle them in random order,
-        or choose to leave the order untouched.
 
     --thumb-size : @after
         This is the size of the thumbnails generated by SHIS. Note that this
