@@ -10,15 +10,15 @@ A drop-in replacement for `python -m http.server`, albeit for images.
 # Quickstart
 Install SHIS.
 ```
-$ pip install shis
+pip install shis
 ```
 Navigate to a `directory/containing/images`.
 ```
-$ cd /directory/containing/images
+cd /directory/containing/images
 ```
 Remember `python -m http.server`? Great. SHIS runs the same way.
 ```
-$ python -m shis.server
+python -m shis.server
 
 # Serving HTTP on 0.0.0.0:7447. Press CTRL-C to quit.
 # Processing images from : directory/containing/images
@@ -30,7 +30,7 @@ There. You can now head over to http://0.0.0.0:7447/ (Or use your public IP inst
 
 **TIP**: You can install the latest development version directly from GitHub.
 ```
-$ pip install git+https://github.com/nikhilweee/shis/
+pip install git+https://github.com/nikhilweee/shis/
 ```
 
 
@@ -61,33 +61,31 @@ Here's an example of what you can expect to see. A live preview is also availabl
 
 
 # Usage
-The following options are available. You can also access this via `python -m shis.server -h`. Further documentation can be found at [shis.readthedocs.io](https://shis.readthedocs.io).
+The following options are available. You can also access this help using `python -m shis.server -h`. Further documentation can be found at [shis.readthedocs.io](https://shis.readthedocs.io).
 ```
-usage: python -m shis.server [-h] [--image-dir DIR] [--thumb-dir DIR]
-                             [--port PORT] [--pagination ITEMS] [--order ORDER]
-                             [--ncpus CPUS] [--watch [SEC]] [--clean]
-                             [--previews] [--thumb-size SIZE]
+usage: python -m shis.server [-h] [-c] [-s] [-p PORT] [-d DIR] [-w [SEC]]
+                             [-n ITEMS] [-o ORDER] [--thumb-dir DIR]
+                             [--previews] [--ncpus CPUS] [--thumb-size SIZE]
                              [--preview-size SIZE]
 
 A drop in replacement for python -m http.server, albeit for images.
 
 optional arguments:
   -h, --help            show this help message and exit
-  --image-dir DIR, -d DIR
+  -c, --clean           remove existing --thumb-dir (if any) before processing
+  -s, --selection       enable selection mode on the website
+  -p PORT, --port PORT  port to host the server on (default: 7447)
+  -d DIR, --image-dir DIR
                         directory to scan for images (default: current dir)
-  --thumb-dir DIR, -s DIR
-                        directory to store generated content (default: shis)
-  --port PORT, -p PORT  port to host the server on (default: 7447)
-  --pagination ITEMS, -n ITEMS
-                        number of items to display per page (default: 200)
-  --order ORDER, -o ORDER
-                        image listing order: name (default), random, or original
-  --ncpus CPUS, -j CPUS
-                        number of workers to spawn (default: available CPUs)
-  --watch [SEC], -w [SEC]
+  -w [SEC], --watch [SEC]
                         filesystem watch interval in seconds (default: False)
-  --clean, -c           remove existing --thumb-dir (if any) before processing
-  --previews, -f        also generate fullscreen previews (takes more time)
+  -n ITEMS, --pagination ITEMS
+                        number of items to display per page (default: 200)
+  -o ORDER, --order ORDER
+                        image listing order: name (default), random, or original
+  --thumb-dir DIR       directory to store generated website (default: shis)
+  --previews            also generate fullscreen previews (takes more time)
+  --ncpus CPUS          number of workers to spawn (default: all available CPUs)
   --thumb-size SIZE     size of generated thumbnails in pixels (default: 256)
   --preview-size SIZE   size of generated previews in pixels (default: 1024)
 ```
@@ -108,7 +106,7 @@ There are a bunch of static image servers (thumbsup, sigal, etc) available in a 
 
 
 # Acknowledgements
-The demo at [nikhilweee.github.io/shis](https://nikhilweee.github.io/shis) shows sample images from the ImageNet dataset obtained through https://github.com/EliSchwartz/imagenet-sample-images. The gallery template used to display images is a modified version of the cards theme from https://github.com/thumbsup/theme-cards.
+The demo at [nikhilweee.github.io/shis](https://nikhilweee.github.io/shis) shows sample images from the ImageNet dataset obtained through [imagenet-sample-images](https://github.com/EliSchwartz/imagenet-sample-images). The gallery template used to display images is a modified version of the cards theme from [thumbsup](https://github.com/thumbsup/theme-cards). SHIS also uses [lightgallery](https://github.com/sachinchoolur/lightGallery) for fullscreen previews and image slideshows.
 
 
 # License
