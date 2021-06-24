@@ -15,8 +15,8 @@ from PIL import Image, ImageOps
 from tqdm.contrib.concurrent import process_map
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from shis.utils import (chunks, filter_image, rreplace, slugify,
-                        start_server, urlify, fixed_width_formatter)
+from shis.utils import (chunks, filter_image, find_thumb, rreplace,
+                        slugify, start_server, urlify, fixed_width_formatter)
 
 
 def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespace):
@@ -181,15 +181,10 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
             album_path = os.path.join(index_root, folder_name)
             if args.thumb_dir in album_path:
                 continue
-            image_root = os.path.join(small_root, folder_name)
             album_size = len(os.listdir(album_path))
-            image = ''
-            if album_size > 0:
-                for file_name in os.listdir(album_path):
-                    if filter_image(file_name):
-                        image_path = os.path.join(image_root, file_name)
-                        image = os.path.relpath(image_path, args.thumb_dir)
-                        break
+            image_root = os.path.join(small_root, folder_name)
+            image = find_thumb(album_path, image_root, args.thumb_dir)
+
             album_slug_path = os.path.join(slug_path, folder_name)
             url = urlify(slugify(album_slug_path))
             folder = {'image': image, 'url': url,
@@ -202,10 +197,10 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
         pagination = []
         for page in range(1, num_pages + 1):
             url = urlify(slug, page)
+            url = url.strip('/')
             page = {'page': page, 'url': url, 'current': ''}
             pagination.append(page)
         album['pagination'] = pagination
-
         album['selection'] = args.selection
 
         # Images
@@ -239,6 +234,8 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
             if page > 0:
                 album['pagination'][page - 1]['current'] = None
             album['pagination'][page]['current'] = 'current'
+            album['url'] = album['pagination'][page]['url']
+            album['revpath'] = os.path.relpath('.', album['url'])
             yield album, page
 
         # Ensure that empty folders are not skipped
@@ -282,7 +279,7 @@ def create_templates(args: argparse.Namespace, num_pages: int) -> None:
     redir_html = os.path.join(args.thumb_dir, 'index.html')
     with open(redir_html, 'w') as f:
         f.write(f'<html><head><meta http-equiv="Refresh" '
-                f'content="0; URL=/html/{image_root}"></head></html>')
+                f'content="0; URL=html/{image_root}"></head></html>')
 
 
     with tqdm(generate_albums(args),

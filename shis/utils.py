@@ -76,6 +76,27 @@ def filter_image(name: str) -> bool:
     return False
 
 
+def find_thumb(album_path: str, image_root: str, thumb_dir: str) -> str:
+    """Finds the first available image in a directory.
+
+    :param album_path: the directory to scan.
+    :param image_root: the path to thumbnails of images in :attr:`album_path`.
+    :param thumb_dir: the path to the generated website.
+    :return: relative path to an image in :attr:`album_path` if it
+        exists, empty string otherwise.
+    """
+    image = ''
+    for root, _, files in os.walk(album_path):
+        for name in files:
+            file_path = os.path.join(root, name)
+            if filter_image(file_path):
+                rel_path = os.path.relpath(file_path, album_path)
+                image_path = os.path.join(image_root, rel_path)
+                image = os.path.relpath(image_path, thumb_dir)
+                return image
+    return image
+
+
 #-------------------------------------------------------------------------------
 # Argparse Utils
 #-------------------------------------------------------------------------------

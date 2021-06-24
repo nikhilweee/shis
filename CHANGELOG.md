@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Switched from `Pillow` to `imagesize` for faster determination if image sizes.
+- Moved from absolute URLs to relative URLs in the generated site.
 
 ### Fixed
 - A bug in determining the images that have changed and need to be processed again.
