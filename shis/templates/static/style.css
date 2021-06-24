@@ -209,6 +209,17 @@
     font-weight: bold;
   }
 
+  #media a {
+    color: #fff;
+  }
+
+  #media .overlay img {
+    height: 1em;
+    width: 1.5em;
+    margin: 0.4em;
+    z-index: 20;
+  }
+
   #media .info {
     position: absolute;
     padding: 0.8em;
@@ -223,7 +234,32 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     border-radius: 0px 0px 8px 8px;
-    cursor: zoom-in;
+  }
+
+  #media .overlay {
+    position: absolute;
+    padding: 0.5em;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 0.8em;
+    margin: 0;
+    font-weight: bold;
+    text-align: center;
+    top: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-decoration: none;
+  }
+
+  #media .overlay.overlay-left {
+    left: 0;
+    border-radius: 8px 0px 8px 0px;
+  }
+
+  #media .overlay.overlay-right {
+    right: 0;
+    border-radius: 0px 8px 0px 8px;
   }
 
 /* 

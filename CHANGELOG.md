@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Addded
 - This CHANGELOG file to keep track of changes.
-- A `watch` feature to continuously update the website based on filesystem changes.
-- The capability to select files manually and copy selected filenames to the clipboard.
+- A *watch* feature to continuously update the website based on filesystem changes.
+- A *selection* mode to select multiple file names and copy them to the clipboard - useful for filtering images.
+- Two icons on each image to open the image in gallery view and in new tab respectively.
 
 ### Changed
 - Switched from `Pillow` to `imagesize` for faster determination if image sizes.

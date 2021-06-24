@@ -206,6 +206,8 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
             pagination.append(page)
         album['pagination'] = pagination
 
+        album['selection'] = args.selection
+
         # Images
         for page, chunk in enumerate(chunks(files, args.pagination)):
             thumbs = []
@@ -367,25 +369,27 @@ def make_parser() -> argparse.ArgumentParser:
         prog='python -m shis.server', 
         description='A drop in replacement for python -m http.server, albeit for images.',
         formatter_class=fixed_width_formatter(width=80))
-    parser.add_argument('--image-dir', '-d', default='', metavar='DIR',
-        help='directory to scan for images (default: current dir)')
-    parser.add_argument('--thumb-dir', '-s', default='shis', metavar='DIR',
-        help='directory to store generated content (default: %(default)s)')
-    parser.add_argument('--port', '-p', type=int, default=None,
+    parser.add_argument('-c', '--clean', action='store_true',
+        help='remove existing --thumb-dir (if any) before processing')
+    parser.add_argument('-s', '--selection', action='store_true',
+        help='enable selection mode on the website')
+    parser.add_argument('-p', '--port', type=int, default=None,
         help='port to host the server on (default: 7447)')
-    parser.add_argument('--pagination', '-n', type=int, default=200, metavar='ITEMS',
+    parser.add_argument('-d', '--image-dir', default='', metavar='DIR',
+        help='directory to scan for images (default: current dir)')
+    parser.add_argument('-w', '--watch', type=int, default=False, const=30, nargs='?',
+        metavar='SEC', help='filesystem watch interval in seconds (default: %(default)s)')
+    parser.add_argument('-n', '--pagination', type=int, default=200, metavar='ITEMS',
         help='number of items to display per page (default: %(default)s)')
-    parser.add_argument('--order', '-o', default='name', metavar='ORDER',
+    parser.add_argument('-o', '--order', default='name', metavar='ORDER',
         choices = ['original', 'random', 'name'],
         help='image listing order: name (default), random, or original')
-    parser.add_argument('--ncpus', '-j', type=int, default=cpu_count(), metavar='CPUS',
-        help='number of workers to spawn (default: available CPUs)')
-    parser.add_argument('--watch', '-w', type=int, default=False, const=30, nargs='?',
-        metavar='SEC', help='filesystem watch interval in seconds (default: False)')
-    parser.add_argument('--clean', '-c', action='store_true',
-        help='remove existing --thumb-dir (if any) before processing')
-    parser.add_argument('--previews', '-f', action='store_true',
+    parser.add_argument('--thumb-dir', default='shis', metavar='DIR',
+        help='directory to store generated website (default: %(default)s)')
+    parser.add_argument('--previews', action='store_true',
         help='also generate fullscreen previews (takes more time)')
+    parser.add_argument('--ncpus', type=int, default=cpu_count(), metavar='CPUS',
+        help='number of workers to spawn (default: all available CPUs)')
     parser.add_argument('--thumb-size', type=int, default=256, metavar='SIZE',
         help='size of generated thumbnails in pixels (default: %(default)s)')
     parser.add_argument('--preview-size', type=int, default=1024, metavar='SIZE',

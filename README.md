@@ -8,7 +8,7 @@ A drop-in replacement for `python -m http.server`, albeit for images.
 
 
 # Quickstart
-Install `shis`.
+Install SHIS.
 ```
 $ pip install shis
 ```
@@ -16,9 +16,10 @@ Navigate to a `directory/containing/images`.
 ```
 $ cd /directory/containing/images
 ```
-Remember `python -m http.server`? Great.
+Remember `python -m http.server`? Great. SHIS runs the same way.
 ```
 $ python -m shis.server
+
 # Serving HTTP on 0.0.0.0:7447. Press CTRL-C to quit.
 # Processing images from : directory/containing/images
 # Creating thumbnails in : directory/containing/images/shis

@@ -1,99 +1,112 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, user-scalable=no" />
-      <title>{{ album.name }}</title>
-      <link rel="stylesheet" href="/static/reset.css" />
-      <link rel="stylesheet" href="/static/lightgallery.min.css" />
-      <link rel="stylesheet" href="/static/style.css" />
-      <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />      
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no" />
+  <title>{{ album.name }}</title>
+  <link rel="stylesheet" href="/static/reset.css" />
+  <link rel="stylesheet" href="/static/lightgallery.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+</head>
 
-  <body>
-    
+<body>
 
-    <div id="container">
 
-      <!-- Gallery title -->
-      <header>
-        <h1><a href="/">{{ album.name }}</a></h1>
-        <div class="mode">
-          <button class="mode-button notification">
-            <!-- This button holds notification text -->
-          </button>
-          <button class="mode-button" onclick="toggleSelection();">
-            Toggle
-            <input class="clipboard-button" type="image" src="/static/select.svg" title="Toggle selection." />
-          </button>
-          <button class="mode-button" onclick="copySelection();">
-            Copy
-            <input class="clipboard-button" type="image" src="/static/copy.svg" title="Copy selected file names to clipboard." />
-          </button>
-        </div>
-      </header>
+  <div id="container">
 
-      <!-- Breadcrumbs of parent albums -->
-      <nav id="breadcrumbs" class="breadcrumbs">
-        {%- for crumb in album.crumbs -%}
-          <a class="breadcrumb-item" href="/{{ crumb.url }}">{{ crumb.name }}</a>
-          {%- if not loop.last -%} &nbsp;/&nbsp; {%- endif -%}
-        {%- endfor -%}
-      </nav>
-
-      <!-- Nested albums, if any -->
-      <div id="albums">
-        {%- for album in album.albums -%}
-        <a href="/{{ album.url }}" style="background-image: url('/{{ album.image }}')">
-          <div class="info">
-            <h3>{{ album.name }}</h3>
-            <div class="summary">{{ album.size }} items</div>
-          </div>
-        </a>
-        {%- endfor -%}
+    <!-- Gallery title -->
+    <header>
+      <h1><a href="/">{{ album.name }}</a></h1>
+      {%- if album.selection -%}
+      <div class="mode">
+        <button class="mode-button notification">
+          <!-- This button holds notification text -->
+        </button>
+        <button class="mode-button" onclick="toggleSelection();">
+          Toggle
+          <input class="clipboard-button" type="image" src="/static/select.svg" title="Toggle selection." />
+        </button>
+        <button class="mode-button" onclick="copySelection();">
+          Copy
+          <input class="clipboard-button" type="image" src="/static/copy.svg"
+            title="Copy selected file names to clipboard." />
+        </button>
       </div>
+      {%- endif -%}
+    </header>
 
-      <!-- Pagination -->
-      {% if album.thumbs | length %}
-      <nav id="pagination" class="breadcrumbs">
-        {% for page in album.pagination %}
-          <a href="/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
-        {% endfor %}
-      </nav>  
-      {% endif %}
-    
-      <!-- All photos and videos -->
-      <ul id="media" class="clearfix">
-        {% for thumb in album.thumbs %}
-        <li>
-            <img src="/{{ thumb.small }}" loading="eager" width="{{ thumb.width }}" height="{{ thumb.height }}">
-            <div class="info" data-sub-html="{{ thumb.name }}" data-src="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}">{{ thumb.name }}</div>
-        </li>
-        {% endfor %}
-      </ul>
+    <!-- Breadcrumbs of parent albums -->
+    <nav id="breadcrumbs" class="breadcrumbs">
+      {%- for crumb in album.crumbs -%}
+      <a class="breadcrumb-item" href="/{{ crumb.url }}">{{ crumb.name }}</a>
+      {%- if not loop.last -%} &nbsp;/&nbsp; {%- endif -%}
+      {%- endfor -%}
+    </nav>
 
-      <!-- Pagination -->
-      {% if album.thumbs | length %}
-      <nav id="pagination" class="breadcrumbs breadcrumbs-bottom">
-        {% for page in album.pagination %}
-          <a href="/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
-        {% endfor %}
-      </nav>
-      {% endif %}
-
-      <footer>
-        Created using <a href="https://github.com/nikhilweee/shis">SHIS</a>.
-      </footer>
-
+    <!-- Nested albums, if any -->
+    <div id="albums">
+      {%- for album in album.albums -%}
+      <a href="/{{ album.url }}" style="background-image: url('/{{ album.image }}')">
+        <div class="info">
+          <h3>{{ album.name }}</h3>
+          <div class="summary">{{ album.size }} items</div>
+        </div>
+      </a>
+      {%- endfor -%}
     </div>
 
-    <script src="/static/jquery.min.js"></script>
-    <script src="/static/lightgallery.min.js"></script>
-    <script src="/static/lg-zoom.min.js"></script>
-    <script src="/static/selection.min.js"></script>
-    <script src="/static/index.js"></script>
+    <!-- Pagination -->
+    {% if album.thumbs | length %}
+    <nav id="pagination" class="breadcrumbs">
+      {% for page in album.pagination %}
+      <a href="/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
+      {% endfor %}
+    </nav>
+    {% endif %}
 
-  </body>
+    <!-- All photos and videos -->
+    <ul id="media" class="clearfix">
+      {% for thumb in album.thumbs %}
+      <li>
+        <div class="overlay overlay-left">
+          <a href=""><img class="lg-selector" src="/static/expand.svg" data-sub-html="{{ thumb.name }}"
+              data-src="/{{ thumb.large }}" data-download-url="/{{ thumb.full }}" /></a>
+        </div>
+        <div class="overlay overlay-right">
+          <a target="_blank" href="/{{ thumb.large }}"><img src="/static/external.svg" title="Open in a new tab"/></a>
+        </div>
+        <img src="/{{ thumb.small }}" loading="eager" width="{{ thumb.width }}" height="{{ thumb.height }}">
+        <div class="info">{{ thumb.name }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Pagination -->
+    {% if album.thumbs | length %}
+    <nav id="pagination" class="breadcrumbs breadcrumbs-bottom">
+      {% for page in album.pagination %}
+      <a href="/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
+      {% endfor %}
+    </nav>
+    {% endif %}
+
+    <footer>
+      Created using <a href="https://github.com/nikhilweee/shis">SHIS</a>.
+    </footer>
+
+  </div>
+
+  <script src="/static/jquery.min.js"></script>
+  <script src="/static/lightgallery.js"></script>
+  <script src="/static/lg-zoom.min.js"></script>
+  <script src="/static/index.js"></script>
+  {%- if album.selection -%}
+  <script src="/static/selection.min.js"></script>
+  <script src="/static/select.js"></script>
+  {%- endif -%}
+
+</body>
 
 </html>
