@@ -23,7 +23,8 @@
         </button>
         <button class="mode-button" onclick="toggleSelection();">
           Toggle
-          <input class="clipboard-button" type="image" src="{{ album.revpath }}/static/select.svg" title="Toggle selection." />
+          <input class="clipboard-button" type="image" src="{{ album.revpath }}/static/select.svg"
+            title="Toggle selection." />
         </button>
         <button class="mode-button" onclick="copySelection();">
           Copy
@@ -45,7 +46,8 @@
     <!-- Nested albums, if any -->
     <div id="albums">
       {%- for subalbum in album.albums -%}
-      <a href="{{ album.revpath }}/{{ subalbum.url }}" style="background-image: url('{{ album.revpath }}/{{ subalbum.image }}')">
+      <a href="{{ album.revpath }}/{{ subalbum.url }}"
+        style="background-image: url('{{ album.revpath }}/{{ subalbum.image }}')">
         <div class="info">
           <h3>{{ subalbum.name }}</h3>
           <div class="summary">{{ subalbum.size }} items</div>
@@ -68,13 +70,16 @@
       {% for thumb in album.thumbs %}
       <li>
         <div class="overlay overlay-left">
-          <a href=""><img class="lg-selector" src="{{ album.revpath }}/static/expand.svg" data-sub-html="{{ thumb.name }}"
-              data-src="{{ album.revpath }}/{{ thumb.large }}" data-download-url="{{ album.revpath }}/{{ thumb.full }}" /></a>
+          <a href=""><img class="lg-selector" src="{{ album.revpath }}/static/expand.svg" title="Open in gallery view"
+              data-sub-html="{{ thumb.name }}" data-src="{{ album.revpath }}/{{ thumb.large }}"
+              data-download-url="{{ album.revpath }}/{{ thumb.full }}" /></a>
         </div>
         <div class="overlay overlay-right">
-          <a target="_blank" href="{{ album.revpath }}/{{ thumb.large }}"><img src="{{ album.revpath }}/static/external.svg" title="Open in a new tab"/></a>
+          <a target="_blank" href="{{ album.revpath }}/{{ thumb.full }}"><img
+              src="{{ album.revpath }}/static/external.svg" title="Open in a new tab" /></a>
         </div>
-        <img src="{{ album.revpath }}/{{ thumb.small }}" loading="eager" width="{{ thumb.width }}" height="{{ thumb.height }}">
+        <img src="{{ album.revpath }}/{{ thumb.small }}" loading="eager" width="{{ thumb.width }}"
+          height="{{ thumb.height }}">
         <div class="info">{{ thumb.name }}</div>
       </li>
       {% endfor %}

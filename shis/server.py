@@ -201,6 +201,9 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
             page = {'page': page, 'url': url, 'current': ''}
             pagination.append(page)
         album['pagination'] = pagination
+
+        album['url'] = album['pagination'][0]['url']
+        album['revpath'] = os.path.relpath('.', album['url'])
         album['selection'] = args.selection
 
         # Images
