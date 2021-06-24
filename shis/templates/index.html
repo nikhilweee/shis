@@ -23,11 +23,11 @@
         </button>
         <button class="mode-button" onclick="toggleSelection();">
           Toggle
-          <input class="clipboard-button" type="image" src="/static/select.svg" title="Toggle selection." />
+          <input class="clipboard-button" type="image" src="{{ album.revpath }}/static/select.svg" title="Toggle selection." />
         </button>
         <button class="mode-button" onclick="copySelection();">
           Copy
-          <input class="clipboard-button" type="image" src="/static/copy.svg"
+          <input class="clipboard-button" type="image" src="{{ album.revpath }}/static/copy.svg"
             title="Copy selected file names to clipboard." />
         </button>
       </div>
