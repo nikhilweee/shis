@@ -161,10 +161,10 @@ def start_server(args: argparse.Namespace) -> HTTPServer:
     
     :param args: preprocessed command line arguments.
     """
-    if sys.version_info.minor == 6:
+    if sys.version_info.minor in [6, 7]:
         return start_server_36(args)
-    if sys.version_info.minor >= 7:
-        return start_server_37(args)
+    if sys.version_info.minor >= 8:
+        return start_server_38(args)
 
 
 def get_public_ip(host: str, port: int) -> Tuple[str, int]:
@@ -210,7 +210,7 @@ def start_httpd(server: HTTPServer, address: Tuple[str, int],
 
 
 def start_server_36(args):
-    """Start an HTTP Server on Python 3.6.
+    """Start an HTTP Server on Python 3.6 and Python 3.7.
     
     :meta private:
     """
@@ -242,8 +242,8 @@ def start_server_36(args):
     return httpd
 
 
-def start_server_37(args):
-    """Start an HTTP Server on Python 3.7 and above.
+def start_server_38(args):
+    """Start an HTTP Server on Python 3.8 and above.
     
     :meta private:
     """    
