@@ -211,6 +211,7 @@
 
   #media a {
     color: #fff;
+    display: inline-block;
   }
 
   #media .overlay img {
@@ -254,6 +255,7 @@
 
   #media .overlay.overlay-left {
     left: 0;
+    padding: 1em;
     border-radius: 8px 0px 8px 0px;
   }
 
