@@ -16,7 +16,7 @@ from tqdm.contrib.concurrent import process_map
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from shis.utils import (chunks, filter_image, find_thumb, rreplace,
-                        slugify, start_server, urlify, fixed_width_formatter)
+                        start_server, urlify, fixed_width_formatter)
 
 
 def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespace):
@@ -140,7 +140,7 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
     :return: a generator which yields data required to populate each page.
     """
     small_base = os.path.join(args.thumb_dir, 'small')
-    image_base = os.path.dirname(args.image_dir)
+    image_head, image_tail = os.path.split(args.image_dir)
 
     for index_root, folders, files in os.walk(args.image_dir):
         if args.thumb_dir in index_root:
@@ -148,21 +148,23 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
         small_root = rreplace(index_root, args.image_dir, small_base)
         full_root = rreplace(small_root, 'small', 'full')
         large_root = rreplace(small_root, 'small', 'large')
-        slug_path = os.path.relpath(index_root, image_base)
+        slug_name = os.path.relpath(index_root, image_head)
+        slug_path = rreplace(slug_name, image_tail, 'html')
+
         if not args.previews:
             large_root = full_root
 
-        slug = slugify(slug_path)
-        name = os.path.basename(slug_path)
+        name = os.path.basename(slug_name)
         album = {'name': name}
         files = list(filter(filter_image, files))
 
         # Breadcrumbs
         crumbs = []
         crumb_root = ''
-        for name in slug_path.split(os.path.sep):
-            crumb_root = os.path.join(crumb_root, name)
-            url = urlify(slugify(crumb_root))
+        for name, path in zip(slug_name.split(os.path.sep),
+            slug_path.split(os.path.sep)):
+            crumb_root = os.path.join(crumb_root, path)
+            url = urlify(crumb_root)
             crumb = {'name': name, 'url': url}
             crumbs.append(crumb)
         album['crumbs'] = crumbs
@@ -186,7 +188,7 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
             image = find_thumb(album_path, image_root, args.thumb_dir)
 
             album_slug_path = os.path.join(slug_path, folder_name)
-            url = urlify(slugify(album_slug_path))
+            url = urlify(album_slug_path)
             folder = {'image': image, 'url': url,
                       'name': folder_name, 'size': album_size}
             albums.append(folder)
@@ -196,7 +198,7 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
         num_pages = max(1, math.ceil(len(files) / args.pagination))
         pagination = []
         for page in range(1, num_pages + 1):
-            url = urlify(slug, page)
+            url = urlify(slug_path, page)
             url = url.strip('/')
             page = {'page': page, 'url': url, 'current': ''}
             pagination.append(page)
@@ -282,7 +284,7 @@ def create_templates(args: argparse.Namespace, num_pages: int) -> None:
     redir_html = os.path.join(args.thumb_dir, 'index.html')
     with open(redir_html, 'w') as f:
         f.write(f'<html><head><meta http-equiv="Refresh" '
-                f'content="0; URL=html/{image_root}"></head></html>')
+                f'content="0; URL=html/"></head></html>')
 
 
     with tqdm(generate_albums(args),

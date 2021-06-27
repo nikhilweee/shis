@@ -38,18 +38,6 @@ def rreplace(string: str, find: str, replace: str) -> str:
     return replace.join(string.rsplit(find, 1))
 
 
-def slugify(path: str) -> str:
-    """Create a slug given a :attr:`path`.
-
-    Essentially, this replaces slashes with dashes.
-
-    :param path: the path to slugify.
-    :return: the slugified path.
-    """
-    return '/'.join(path.split(os.path.sep))
-
-
-
 def urlify(slug: str, page=1) -> str:
     """Create a URL given a :attr:`slug` and a :attr:`page` index.
 
@@ -58,9 +46,9 @@ def urlify(slug: str, page=1) -> str:
     :return: the path of the HTML page described by :attr:`slug`.
     """
     if page > 1:
-        url = f'html/{slug}/page/{page}/'
+        url = f'{slug}/page/{page}/'
     else:
-        url = f'html/{slug}/'
+        url = f'{slug}/'
     return url
 
 
@@ -181,7 +169,7 @@ def get_public_ip(host: str, port: int) -> Tuple[str, int]:
             status = r.getcode()
         if status == 200:
             host = public_host
-    except urllib.error.URLError as error:
+    except urllib.error.URLError:
         pass
     return host, port
 
