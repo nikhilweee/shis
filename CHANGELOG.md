@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - A bug in determining the images that have changed and need to be processed again.
+- Thumbnails are now resized according to the smallest dim so images with large aspect ratios don't appear blurry.
+- A bug in determining public IPs in the first run.
 
 
 
