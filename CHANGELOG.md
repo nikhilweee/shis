@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Switched from `Pillow` to `imagesize` for faster determination if image sizes.
+- SHIS will also clean up before exiting if the `-c` option is passed.
 - Moved from absolute URLs to relative URLs in the generated site.
 
 ### Fixed

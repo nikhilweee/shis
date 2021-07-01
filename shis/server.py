@@ -60,7 +60,6 @@ def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespac
         # Save Full
         full_dest = os.path.relpath(in_file, os.path.dirname(full_file))
         os.symlink(full_dest, full_file)
-        # shutil.copy(in_file, full_file)
         return
     except Exception as e:
         return e
@@ -89,8 +88,8 @@ def process_paths(args: argparse.Namespace) -> Tuple[Tuple[str, str, str, str], 
 
     if not args.quiet:
         tqdm.write(f'Processing images from : {args.image_dir}')
-        if args.clean and os.path.isdir(args.thumb_dir):
-            tqdm.write(f'Clearing existing data : {args.thumb_dir}')
+        if args.clean and os.path.isdir(os.path.join(args.thumb_dir, 'small')):
+            tqdm.write(f'Removing existing data : {args.thumb_dir}')
             shutil.rmtree(args.thumb_dir)
         tqdm.write(f'Creating thumbnails in : {args.thumb_dir}')
 
@@ -113,9 +112,7 @@ def process_paths(args: argparse.Namespace) -> Tuple[Tuple[str, str, str, str], 
             full_path = os.path.join(full_root, name)
             if idx != 0 and idx % args.pagination == 0:
                 num_pages += 1
-            if args.clean:
-                paths.append((image_path, small_path, large_path, full_path))
-            elif not os.path.exists(small_path):
+            if not os.path.exists(small_path):
                 paths.append((image_path, small_path, large_path, full_path))
             elif os.path.getmtime(small_path) < os.path.getmtime(image_path):
                 paths.append((image_path, small_path, large_path, full_path))
@@ -332,7 +329,6 @@ def main(args: argparse.Namespace) -> None:
                     bar_format=("{l_bar}{bar:20}| {n_fmt:>5}/{total_fmt:>5} "
                     "[{elapsed}<{remaining}, {rate_fmt:>10}{postfix}]"))
             stale_paths = paths
-            args.clean = False
             args.quiet = True
             if not args.watch:
                 break
@@ -344,6 +340,9 @@ def main(args: argparse.Namespace) -> None:
     except KeyboardInterrupt:
         print('\nKeyboard interrupt received, exiting.')
         server.shutdown()
+        if args.clean and os.path.isdir(args.thumb_dir):
+            tqdm.write(f'Removing existing data : {args.thumb_dir}')
+            shutil.rmtree(args.thumb_dir)
         sys.exit()
 
 
