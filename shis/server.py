@@ -15,8 +15,8 @@ from PIL import Image, ImageOps
 from tqdm.contrib.concurrent import process_map
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from shis.utils import (chunks, filter_image, find_thumb, rreplace,
-                        start_server, urlify, fixed_width_formatter)
+from shis.utils import (chunks, filter_image, find_thumb, rreplace, urlify,
+                        start_server, scale_dims, fixed_width_formatter)
 
 
 def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespace):
@@ -40,7 +40,8 @@ def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespac
         # Save Preview
         im = Image.open(in_file)
         if args.previews:
-            im.thumbnail((args.preview_size, args.preview_size))
+            max_size = scale_dims(im.width, im.height, args.preview_size)
+            im.thumbnail(max_size)
             im = ImageOps.exif_transpose(im)
             if 'exif' in im.info:
                 exif = im.info['exif']
@@ -48,7 +49,8 @@ def generate_thumbnail(paths: Tuple[str, str, str, str], args: argparse.Namespac
             else:
                 im.save(large_file)
         # Save Thumbnail
-        im.thumbnail((args.thumb_size, args.thumb_size))
+        max_size = scale_dims(im.width, im.height, args.thumb_size)
+        im.thumbnail(max_size)
         im = ImageOps.exif_transpose(im)
         if 'exif' in im.info:
             exif = im.info['exif']
@@ -220,15 +222,7 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
                     width, height = imagesize.get(real_path)
                 except ValueError:
                     continue
-                if width < height:
-                    width = width * args.thumb_size / height
-                    height = args.thumb_size
-                if width == height:
-                    width = args.thumb_size
-                    height = args.thumb_size
-                if width > height:
-                    width = width * args.thumb_size / height
-                    height = args.thumb_size
+                width, height = scale_dims(width, height, args.thumb_size)
                 small = os.path.relpath(small_path, args.thumb_dir)
                 large = os.path.relpath(large_path, args.thumb_dir)
                 full = os.path.relpath(full_path, args.thumb_dir)

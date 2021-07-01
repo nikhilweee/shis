@@ -84,6 +84,28 @@ def find_thumb(album_path: str, image_root: str, thumb_dir: str) -> str:
                 return image
     return image
 
+def scale_dims(width: int, height: int, min_val: int) -> Tuple[int, int]:
+    """Scales :attr:`width` and :attr:`height` according to :attr:`min_val`.
+
+    The smaller out of :attr:`width` and :attr:`height` is assigned a value of
+    :attr:`min_val`, and the other parameter is scaled accordingly.
+
+    :param width: the width to scale
+    :param height: the height to scale
+    :param min_val: the minimum value of width or height
+    :return: a tuple containing the scaled width and height
+    """
+    if width < height:
+        width = width * min_val / height
+        height = min_val
+    if width == height:
+        width = min_val
+        height = min_val
+    if width > height:
+        width = width * min_val / height
+        height = min_val
+    return round(width), round(height)
+
 
 #-------------------------------------------------------------------------------
 # Argparse Utils
