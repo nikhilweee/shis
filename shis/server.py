@@ -90,7 +90,6 @@ def process_paths(args: argparse.Namespace) -> Tuple[Tuple[str, str, str, str], 
     if not args.quiet:
         tqdm.write(f'Processing images from : {args.image_dir}')
         if args.clean and os.path.isdir(args.thumb_dir):
-            existing_dir = os.path.relpath(args.thumb_dir, os.getcwd())
             tqdm.write(f'Clearing existing data : {args.thumb_dir}')
             shutil.rmtree(args.thumb_dir)
         tqdm.write(f'Creating thumbnails in : {args.thumb_dir}')
@@ -273,13 +272,6 @@ def create_templates(args: argparse.Namespace, num_pages: int) -> None:
         loader=FileSystemLoader(template_dir),
         autoescape=select_autoescape(['html', 'xml'])
     )
-
-    image_root = os.path.basename(args.image_dir)
-    redir_html = os.path.join(args.thumb_dir, 'index.html')
-    with open(redir_html, 'w') as f:
-        f.write(f'<html><head><meta http-equiv="Refresh" '
-                f'content="0; URL=html/"></head></html>')
-
 
     with tqdm(generate_albums(args),
         desc="Generating Website     ", total=num_pages, ncols=100,

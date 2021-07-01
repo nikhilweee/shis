@@ -171,6 +171,12 @@ def start_server(args: argparse.Namespace) -> HTTPServer:
     
     :param args: preprocessed command line arguments.
     """
+    # We need to create index.html for get_public_ip to receive HTTP 200.
+    os.makedirs(args.thumb_dir, exist_ok=True)
+    redir_html = os.path.join(args.thumb_dir, 'index.html')
+    with open(redir_html, 'w') as f:
+        f.write(f'<html><head><meta http-equiv="Refresh" '
+                f'content="0; URL=html/"></head></html>')
     if sys.version_info.minor in [6, 7]:
         return start_server_36(args)
     if sys.version_info.minor >= 8:
