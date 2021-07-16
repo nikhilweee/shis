@@ -201,10 +201,11 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
             page = {'page': page, 'url': url, 'current': ''}
             pagination.append(page)
         album['pagination'] = pagination
-
+        album['group'] = args.group
         album['url'] = album['pagination'][0]['url']
         album['revpath'] = os.path.relpath('.', album['url'])
         album['selection'] = args.selection
+        album['start_idx'] = 0
 
         # Images
         for page, chunk in enumerate(chunks(files, args.pagination)):
@@ -228,6 +229,7 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
             album['thumbs'] = thumbs
             if page > 0:
                 album['pagination'][page - 1]['current'] = None
+                album['start_idx'] = page * args.pagination
             album['pagination'][page]['current'] = 'current'
             album['url'] = album['pagination'][page]['url']
             album['revpath'] = os.path.relpath('.', album['url'])
@@ -302,6 +304,8 @@ def preprocess_args(args: argparse.Namespace) -> argparse.Namespace:
         os.getcwd(), args.image_dir)).rstrip(os.path.sep)
     args.thumb_dir = os.path.abspath(os.path.join(
         os.getcwd(), args.thumb_dir)).rstrip(os.path.sep)
+    if args.group:
+        args.pagination += args.group - (args.pagination % args.group)
     return args
 
 
@@ -368,6 +372,8 @@ def make_parser() -> argparse.ArgumentParser:
         metavar='SEC', help='filesystem watch interval in seconds (default: %(default)s)')
     parser.add_argument('-n', '--pagination', type=int, default=200, metavar='ITEMS',
         help='number of items to display per page (default: %(default)s)')
+    parser.add_argument('-g', '--group', type=int, default=None, metavar='ITEMS',
+        help='number of items to group together (default: %(default)s)')
     parser.add_argument('-o', '--order', default='name', metavar='ORDER',
         choices = ['original', 'random', 'name'],
         help='image listing order: name (default), random, or original')

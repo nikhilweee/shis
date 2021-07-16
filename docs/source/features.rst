@@ -93,3 +93,10 @@ use the ``-w`` or the ``--watch`` flags. By default, SHIS will scan the
 filesystem for changes every 30 seconds. You can specify the scanning
 interval (in seconds) right after the watch flag. For example, ``-w 15``
 sets the watch interval as 15 seconds.
+
+Group items together
+--------------------
+As a visual aid, SHIS can insert newlines at specified intervals so images
+can be grouped together, and every nth image appears at the same position
+on the screen. To use this feature, use the ``-g`` or the ``--group`` flag.
+The default behaviour is not to group any items together.

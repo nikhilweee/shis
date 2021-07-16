@@ -64,7 +64,7 @@ Here's an example of what you can expect to see. A live preview is also availabl
 The following options are available. You can also access this help using `python -m shis.server -h`. Further documentation can be found at [shis.readthedocs.io](https://shis.readthedocs.io).
 ```
 usage: python -m shis.server [-h] [-c] [-s] [-p PORT] [-d DIR] [-w [SEC]]
-                             [-n ITEMS] [-o ORDER] [--thumb-dir DIR]
+                             [-n ITEMS] [-g ITEMS] [-o ORDER] [--thumb-dir DIR]
                              [--previews] [--ncpus CPUS] [--thumb-size SIZE]
                              [--preview-size SIZE]
 
@@ -81,6 +81,8 @@ optional arguments:
                         filesystem watch interval in seconds (default: False)
   -n ITEMS, --pagination ITEMS
                         number of items to display per page (default: 200)
+  -g ITEMS, --group ITEMS
+                        number of items to group together (default: None)
   -o ORDER, --order ORDER
                         image listing order: name (default), random, or original
   --thumb-dir DIR       directory to store generated website (default: shis)

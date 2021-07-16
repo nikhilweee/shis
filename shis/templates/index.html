@@ -16,10 +16,10 @@
     <!-- Header -->
     <header>
       <h1><a href="{{ album.revpath }}/">{{ album.name }}</a></h1>
-      {%- if album.selection -%}
+      {% if album.selection %}
       <div class="mode">
         <button class="mode-button notification">
-          <!-- This button holds notification text -->
+          <!-- Notifications -->
         </button>
         <button class="mode-button" onclick="toggleSelection();">
           Toggle
@@ -32,20 +32,20 @@
             title="Copy selected file names to clipboard." />
         </button>
       </div>
-      {%- endif -%}
+      {% endif %}
     </header>
 
-    <!-- Breadcrumbs of parent albums -->
+    <!-- Breadcrumbs -->
     <nav id="breadcrumbs" class="breadcrumbs">
-      {%- for crumb in album.crumbs -%}
+      {% for crumb in album.crumbs %}
       <a class="breadcrumb-item" href="{{ album.revpath }}/{{ crumb.url }}">{{ crumb.name }}</a>
-      {%- if not loop.last -%} &nbsp;/&nbsp; {%- endif -%}
-      {%- endfor -%}
+      {% if not loop.last %}&nbsp;/&nbsp;{% endif %}
+      {% endfor %}
     </nav>
 
-    <!-- Nested albums, if any -->
+    <!-- Nested Albums -->
     <div id="albums">
-      {%- for subalbum in album.albums -%}
+      {% for subalbum in album.albums %}
       <a href="{{ album.revpath }}/{{ subalbum.url }}"
         style="background-image: url('{{ album.revpath }}/{{ subalbum.image }}')">
         <div class="info">
@@ -53,11 +53,11 @@
           <div class="summary">{{ subalbum.size }} items</div>
         </div>
       </a>
-      {%- endfor -%}
+      {% endfor %}
     </div>
 
-    <!-- Pagination -->
-    {% if album.thumbs | length %}
+    <!-- Top Pagination -->
+    {% if album.thumbs %}
     <nav id="pagination" class="breadcrumbs">
       {% for page in album.pagination %}
       <a href="{{ album.revpath }}/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
@@ -65,12 +65,15 @@
     </nav>
     {% endif %}
 
-    <!-- All photos and videos -->
+    <!-- Media -->
     <ul id="media" class="clearfix">
       {% for thumb in album.thumbs %}
+      {% if album.group and loop.index0 is divisibleby album.group %}
+        <br />
+      {% endif %}
       <li>
         <div class="overlay overlay-left">
-          {{ loop.index }}
+          {{ album.start_idx + loop.index }}
         </div>
         <div class="overlay overlay-right">
           <a href="#"><img class="lg-selector" src="{{ album.revpath }}/static/expand.svg" title="Open in gallery view"
@@ -86,8 +89,8 @@
       {% endfor %}
     </ul>
 
-    <!-- Pagination -->
-    {% if album.thumbs | length %}
+    <!-- Bottom Pagination -->
+    {% if album.thumbs %}
     <nav id="pagination" class="breadcrumbs breadcrumbs-bottom">
       {% for page in album.pagination %}
       <a href="{{ album.revpath }}/{{ page.url }}" class="breadcrumb-item {{ page.current }}">{{ page.page }}</a>
@@ -105,10 +108,10 @@
   <script src="{{ album.revpath }}/static/lightgallery.js"></script>
   <script src="{{ album.revpath }}/static/lg-zoom.min.js"></script>
   <script src="{{ album.revpath }}/static/index.js"></script>
-  {%- if album.selection -%}
+  {% if album.selection %}
   <script src="{{ album.revpath }}/static/selection.js"></script>
   <script src="{{ album.revpath }}/static/select.js"></script>
-  {%- endif -%}
+  {% endif %}
 </body>
 
 </html>

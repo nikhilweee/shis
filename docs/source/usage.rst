@@ -50,6 +50,11 @@ Usage
         the website. The rest of the images are distributed across multiple
         pages.
 
+    -g --group : @after
+        SHIS can insert newlines at specified intevals so that images appear
+        to be organised in groups, which can be helpful as a visual aid. The
+        ability to group images is disabled by default.
+
     -o --order : @after
         This is the order in which images shall be displayed. You can either
         choose to sort images by their filename, shuffle them in random order,
