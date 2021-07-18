@@ -5,7 +5,6 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="shis",
-    version="0.1",
     author="Nikhil Verma",
     author_email="nikhilweee@gmail.com",
     description="Simple HTTP Image Server",
@@ -16,6 +15,8 @@ setuptools.setup(
     package_data={'shis': ['templates/*', 'templates/*/*']},
     license="MIT",
     install_requires=['Pillow>=7.0.0', 'Jinja2', 'tqdm', 'imagesize'],
+    setup_requires=['setuptools-git-versioning'],
+    version_config=True,
     python_requires='>=3.6',
     project_urls={
         'Documentation': 'https://shis.readthedocs.io/',

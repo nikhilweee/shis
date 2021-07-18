@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Switched from `Pillow` to `imagesize` for faster determination if image sizes.
 - SHIS will also clean up before exiting if the `-c` option is passed.
 - Moved from absolute URLs to relative URLs in the generated site.
+- Switched to dynamic versioning using `setuptools-git-versioning`
 
 ### Fixed
 - A bug in determining the images that have changed and need to be processed again.
