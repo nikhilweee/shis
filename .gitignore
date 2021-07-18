@@ -8,7 +8,11 @@ docs/build/
 # Setuptools
 build/
 dist/
+.eggs/
 *.egg-info/
 
 # Mac specific
 .DS_Store
+
+# Dev
+.vscode
