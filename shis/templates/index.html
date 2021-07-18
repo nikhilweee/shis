@@ -69,18 +69,18 @@
     <ul id="media" class="clearfix">
       {% for thumb in album.thumbs %}
       {% if album.group and loop.index0 is divisibleby album.group %}
-        <br />
+      <br />
       {% endif %}
       <li>
         <div class="overlay overlay-left">
           {{ album.start_idx + loop.index }}
         </div>
         <div class="overlay overlay-right">
-          <a href="#"><img class="lg-selector" src="{{ album.revpath }}/static/expand.svg" title="Open in gallery view"
-              data-sub-html="{{ thumb.name }}" data-src="{{ album.revpath }}/{{ thumb.large }}"
-              data-download-url="{{ album.revpath }}/{{ thumb.full }}" /></a>
-          <a target="_blank" href="{{ album.revpath }}/{{ thumb.full }}"><img
-              src="{{ album.revpath }}/static/external.svg" title="Open in a new tab" /></a>
+          <a href="{{ album.revpath }}/{{ thumb.large }}" class="lg-selector" 
+            data-sub-html="{{ thumb.name }}" data-download-url="{{ album.revpath }}/{{ thumb.full }}">
+            <img src="{{ album.revpath }}/static/expand.svg" title="Open in gallery view" /></a>
+          <a target="_blank" href="{{ album.revpath }}/{{ thumb.full }}">
+            <img src="{{ album.revpath }}/static/external.svg" title="Open in a new tab" /></a>
         </div>
         <img src="{{ album.revpath }}/{{ thumb.small }}" loading="eager" width="{{ thumb.width }}"
           height="{{ thumb.height }}">
