@@ -361,7 +361,7 @@ def make_parser() -> argparse.ArgumentParser:
         description='A drop in replacement for python -m http.server, albeit for images.',
         formatter_class=fixed_width_formatter(width=80))
     parser.add_argument('-c', '--clean', action='store_true',
-        help='remove existing --thumb-dir (if any) before processing')
+        help='remove existing thumb dir (if any) before processing')
     parser.add_argument('-s', '--selection', action='store_true',
         help='enable selection mode on the website')
     parser.add_argument('-p', '--port', type=int, default=None,

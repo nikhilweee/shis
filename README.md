@@ -70,9 +70,9 @@ usage: python -m shis.server [-h] [-c] [-s] [-p PORT] [-d DIR] [-w [SEC]]
 
 A drop in replacement for python -m http.server, albeit for images.
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
-  -c, --clean           remove existing --thumb-dir (if any) before processing
+  -c, --clean           remove existing thumb dir (if any) before processing
   -s, --selection       enable selection mode on the website
   -p PORT, --port PORT  port to host the server on (default: 7447)
   -d DIR, --image-dir DIR
