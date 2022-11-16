@@ -37,8 +37,8 @@ pip install git+https://github.com/nikhilweee/shis/
 # Preview
 <!--
     # shutil.copy(in_file, full_file) instead of os.symlink(full_dest, full_file)
-    python -m shis.server -d imagenet-sample-images -s demo -n 100 -f -c
-    find demo -type f -name "*.html" -exec sed -i "s/\"\//\"\/shis\//g" {} \;
+    python -m shis.server -d sample-images --thumb-dir demo -s -n 100
+    # find demo -type f -name "*.html" -exec sed -i "s/\"\//\"\/shis\//g" {} \;
     git subtree push --prefix demo/ origin gh-pages
 -->
 Here's an example of what you can expect to see. A live preview is also available at
@@ -50,7 +50,7 @@ Here's an example of what you can expect to see. A live preview is also availabl
 * Drop-in replacement for `python -m http.server`, so it's easy on your brain.
 * Serves website even before creating thumbnails, so you don't have to wait.
 * Uses multiple processes to create thumbails, so it's fast.
-* Efficient resumes, so we build on past progress.
+* Minimal redundancy, we build on past progress.
 * Creates both small and large size thumbnails, so it's easy on your eyes.
 * Minimal dependencies - Pillow, Jinja2, tqdm, and imagesize.
 * Server side pagination, so it's easy on your browser.
