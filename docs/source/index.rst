@@ -43,5 +43,4 @@ Finally, run ``shis.server`` the same way you'd run ``http.server`` ::
 
 There. You should now be able to view images at ``http://0.0.0.0:7447/``.
 For more information on advanced usage, please see :doc:`usage`. For a list of 
-features, head over to :doc:`features`. A live preview is also available at
-`nikhilweee.github.io/shis <https://nikhilweee.github.io/shis/>`_.
+features, head over to :doc:`features`.

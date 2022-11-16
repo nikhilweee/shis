@@ -41,8 +41,8 @@ pip install git+https://github.com/nikhilweee/shis/
     # find demo -type f -name "*.html" -exec sed -i "s/\"\//\"\/shis\//g" {} \;
     git subtree push --prefix demo/ origin gh-pages
 -->
-Here's an example of what you can expect to see. A live preview is also available at
-[nikhilweee.github.io/shis](https://nikhilweee.github.io/shis).
+Here's an example of what you can expect to see. 
+
 ![Demo](https://raw.githubusercontent.com/nikhilweee/shis/main/static/demo.png)
 
 
@@ -108,7 +108,7 @@ There are a bunch of static image servers (thumbsup, sigal, etc) available in a 
 
 
 # Acknowledgements
-The demo at [nikhilweee.github.io/shis](https://nikhilweee.github.io/shis) shows sample images from the ImageNet dataset obtained through [imagenet-sample-images](https://github.com/EliSchwartz/imagenet-sample-images). The gallery template used to display images is a modified version of the cards theme from [thumbsup](https://github.com/thumbsup/theme-cards). SHIS also uses [lightgallery](https://github.com/sachinchoolur/lightGallery) for fullscreen previews and image slideshows.
+The gallery template used to display images is a modified version of the cards theme from [thumbsup](https://github.com/thumbsup/theme-cards). SHIS also uses [lightgallery](https://github.com/sachinchoolur/lightGallery) for fullscreen previews and image slideshows.
 
 
 # License
