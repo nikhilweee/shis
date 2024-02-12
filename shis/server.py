@@ -171,6 +171,9 @@ def generate_albums(args: argparse.Namespace) -> Tuple[Dict, int]:
         if args.order == 'name':
             files = sorted(files)
             folders = sorted(folders)
+        if args.order == 'name-reversed':
+            files = sorted(files, reverse=True)
+            folders = sorted(folders, reverse=True)
         if args.order == 'random':
             random.shuffle(files)
             random.shuffle(folders)
@@ -375,8 +378,8 @@ def make_parser() -> argparse.ArgumentParser:
     parser.add_argument('-g', '--group', type=int, default=None, metavar='ITEMS',
         help='number of items to group together (default: %(default)s)')
     parser.add_argument('-o', '--order', default='name', metavar='ORDER',
-        choices = ['original', 'random', 'name'],
-        help='image listing order: name (default), random, or original')
+        choices = ['original', 'random', 'name', 'name-reversed'],
+        help='image listing order: name (default), name (reversed), random, or original')
     parser.add_argument('--thumb-dir', default='shis', metavar='DIR',
         help='directory to store generated website (default: %(default)s)')
     parser.add_argument('--previews', action='store_true',
